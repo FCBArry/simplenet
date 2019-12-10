@@ -11,7 +11,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public abstract class Packet {
+public abstract class Packet implements IPacket {
     /**
      * 协议号
      */

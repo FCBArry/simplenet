@@ -1,11 +1,15 @@
 package cn.arry.netty.packet;
 
 import io.netty.buffer.ByteBuf;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author 云顶之弈江流儿
  * @version 2019/12/10
  */
+@Getter
+@Setter
 public class S2SPacket extends Packet {
     /**
      * 包头长度
@@ -41,7 +45,7 @@ public class S2SPacket extends Packet {
     }
 
     @Override
-    public Packet read(ByteBuf in) {
+    public S2SPacket read(ByteBuf in) {
         try {
             int length = in.readInt();
             this.code = in.readShort();

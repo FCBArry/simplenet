@@ -35,7 +35,7 @@ public class C2SPacket extends Packet {
     }
 
     @Override
-    public Packet read(ByteBuf in) {
+    public C2SPacket read(ByteBuf in) {
         try {
             int length = in.readInt();
             this.edSum = in.readShort();
