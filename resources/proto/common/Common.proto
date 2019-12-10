@@ -1,0 +1,8 @@
+package cn.arry.gen.common;
+
+option java_outer_classname = "CommonMsg";
+
+// test
+message TestProto {
+    optional int32 testID = 1; // test
+}

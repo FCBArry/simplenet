@@ -1,0 +1,8 @@
+package cn.arry.gen.server;
+
+option java_outer_classname = "SCommonMsg";
+
+// test
+message TestProto {
+    optional int32 testID = 1; // test
+}
