@@ -1,51 +1,39 @@
 package cn.arry.netty.executor;
 
 import cn.arry.Log;
+import lombok.Getter;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * 任务线程池
+ */
+@Getter
 public class ExecutorPool {
     private String poolName;
-    private ExecutorService service;
-    private int maximumPoolSize;
 
-    public ExecutorPool(String poolName, int maximumPoolSize) {
-        service = Executors.newFixedThreadPool(maximumPoolSize, new NamedThreadFactory(poolName));
+    private ExecutorService service;
+
+    private int nThreads;
+
+    public ExecutorPool(String poolName, int nThreads) {
+        service = Executors.newFixedThreadPool(nThreads, new NamedThreadFactory(poolName));
         this.poolName = poolName;
-        this.maximumPoolSize = maximumPoolSize;
+        this.nThreads = nThreads;
     }
 
     public void submit(Runnable task) {
         service.submit(task);
     }
 
-    /**
-     * 停止
-     */
     public void stop() {
         try {
-            Log.info("Exceutor Closing " + poolName + "...");
-
             service.shutdown();
-            service.awaitTermination(2, TimeUnit.MINUTES);
-
-            Log.info("Exceutor " + poolName + " closed");
+            service.awaitTermination(1, TimeUnit.MINUTES);
         } catch (Exception e) {
-            Log.error("Close executor error", e);
+            Log.error("ExecutorPool stop error", e);
         }
-    }
-
-    public String getPoolName() {
-        return poolName;
-    }
-
-    public ExecutorService getService() {
-        return service;
-    }
-
-    public int getMaximumPoolSize() {
-        return maximumPoolSize;
     }
 }

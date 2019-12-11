@@ -1,10 +1,13 @@
 package cn.arry.netty.packet;
 
+import cn.arry.Log;
 import io.netty.buffer.ByteBuf;
 import lombok.Getter;
 import lombok.Setter;
 
 /**
+ * s2s传输包
+ *
  * @author 云顶之弈江流儿
  * @version 2019/12/10
  */
@@ -60,6 +63,7 @@ public class S2SPacket extends Packet {
                 in.readBytes(this.bodyData, 0, bodyLen);
             }
         } catch (Exception e) {
+            Log.error("S2SPacket->read error, {}", e);
             in.clear();
         }
 
@@ -70,7 +74,7 @@ public class S2SPacket extends Packet {
     public void write(ByteBuf out) {
         int len = getLength();
         if (len > Short.MAX_VALUE * 0.6) {
-            // warning
+            Log.error("C2SPacket->write, len:{} is so max", len);
         }
 
         try {
@@ -85,7 +89,7 @@ public class S2SPacket extends Packet {
                 out.writeBytes(bodyData);
             }
         } catch (Exception e) {
-
+            Log.error("S2SPacket->write error, {}", toString(), e);
         }
     }
 

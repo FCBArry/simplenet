@@ -1,4 +1,6 @@
-package cn.arry;
+package cn.arry.utils;
+
+import cn.arry.Log;
 
 import java.io.File;
 import java.io.FileFilter;

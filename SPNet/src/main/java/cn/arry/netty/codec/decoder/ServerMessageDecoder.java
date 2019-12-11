@@ -1,5 +1,6 @@
 package cn.arry.netty.codec.decoder;
 
+import cn.arry.Log;
 import cn.arry.netty.packet.S2SPacket;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
@@ -7,6 +8,9 @@ import io.netty.handler.codec.ByteToMessageDecoder;
 
 import java.util.List;
 
+/**
+ * s2s解码
+ */
 public class ServerMessageDecoder extends ByteToMessageDecoder {
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf message, List<Object> out) throws Exception {
@@ -44,7 +48,7 @@ public class ServerMessageDecoder extends ByteToMessageDecoder {
         in.readerIndex(in.readerIndex() + out.readerIndex());
 
         if (packet == null) {
-            // warning log
+            Log.error("ServerMessageDecoder->decode, packet is null");
         }
 
         return packet;

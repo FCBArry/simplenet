@@ -6,3 +6,10 @@ option java_outer_classname = "CCommonMsg";
 message TestProto {
     optional int32 testID = 1; // test
 }
+
+// say hello
+// 1
+// c2s
+message SayHelloProto {
+    required int32 num = 1; // num
+}

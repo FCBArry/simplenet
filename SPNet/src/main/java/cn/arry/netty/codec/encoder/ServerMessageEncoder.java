@@ -1,5 +1,6 @@
 package cn.arry.netty.codec.encoder;
 
+import cn.arry.Log;
 import cn.arry.netty.packet.S2SPacket;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
@@ -7,6 +8,9 @@ import io.netty.handler.codec.MessageToMessageEncoder;
 
 import java.util.List;
 
+/**
+ * s2s编码
+ */
 public class ServerMessageEncoder extends MessageToMessageEncoder<S2SPacket> {
     @Override
     protected void encode(ChannelHandlerContext ctx, S2SPacket pkg, List<Object> out) throws Exception {
@@ -17,7 +21,8 @@ public class ServerMessageEncoder extends MessageToMessageEncoder<S2SPacket> {
         try {
             int dataLength = message.getLength();
             if (dataLength >= Integer.MAX_VALUE || dataLength < 0) {
-                // warning log
+                Log.error("ServerMessageEncoder->encode, the data is too long, destUserID:{} code:{} length:{}",
+                        message.getDestUserID(), message.getCode(), dataLength);
                 return;
             }
 
@@ -25,7 +30,7 @@ public class ServerMessageEncoder extends MessageToMessageEncoder<S2SPacket> {
             message.write(buffer);
             out.add(buffer);
         } catch (Exception e) {
-            // warning log
+            Log.error("ServerMessageEncoder->encode error", e);
             ctx.channel().close();
         }
     }

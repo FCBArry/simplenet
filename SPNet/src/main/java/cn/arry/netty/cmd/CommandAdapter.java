@@ -6,6 +6,9 @@ import cn.arry.netty.packet.C2SPacket;
 import cn.arry.netty.packet.Packet;
 import cn.arry.netty.packet.S2SPacket;
 
+/**
+ * command adapter
+ */
 public class CommandAdapter implements ICommand {
     @Override
     public void execute(AbstractConnection session, Packet packet) throws Exception {
@@ -21,10 +24,10 @@ public class CommandAdapter implements ICommand {
     }
 
     public void execute(AbstractConnection session, C2SPacket packet) throws Exception {
-        Log.info("code {} unimplemented", packet.getCode());
+        Log.info("CommandAdapter->execute, c2s code:{} is unimplemented", packet.getCode());
     }
 
     public void execute(AbstractConnection session, S2SPacket packet) throws Exception {
-        Log.info("code {} unimplemented", packet.getCode());
+        Log.info("CommandAdapter->execute, s2s code:{} is unimplemented", packet.getCode());
     }
 }

@@ -1,10 +1,20 @@
 package cn.arry.netty.executor;
 
 import cn.arry.Log;
+import lombok.Getter;
 
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.concurrent.LinkedBlockingQueue;
 
+/**
+ * 任务队列
+ * <p>
+ * TODO 考虑用LinkedBlockingQueue实现
+ *
+ * @see LinkedBlockingQueue
+ */
+@Getter
 public class TaskQueue<E extends ExecutorPool, R extends Runnable> {
     private E executor;
 
@@ -12,12 +22,12 @@ public class TaskQueue<E extends ExecutorPool, R extends Runnable> {
 
     public TaskQueue(E executor) {
         this.executor = executor;
-        queue = new LinkedList<Runnable>();
+        queue = new LinkedList<>();
     }
 
     /**
      * 加入队列
-     **/
+     */
     public void enqueue(final R task) {
         // 任务封装
         Runnable task0 = new Runnable() {
@@ -25,7 +35,7 @@ public class TaskQueue<E extends ExecutorPool, R extends Runnable> {
                 try {
                     task.run();
                 } catch (Throwable e) {
-                    Log.error("Task execute error", e);
+                    Log.error("task execute error", e);
                 }
 
                 // 从队列中移除自己
@@ -34,19 +44,19 @@ public class TaskQueue<E extends ExecutorPool, R extends Runnable> {
         };
 
         // 加入消息
-        int queueSize = 0;
+        int queueSize;
         synchronized (queue) {
             queue.add(task0);
             queueSize = queue.size();
         }
 
-        // 如果消息数量为1个, 说明之前队列已经为空.
+        // 如果消息数量为1个
         if (queueSize == 1) {
             // 立马执行
             executor.submit(task0);
         } else if (queueSize > 1000) {
             // 提醒消息累计过多
-            Log.warn("[" + executor.getPoolName() + "] , queue.size > 1000, curSize: " + queue.size() + ", task: " + task);
+            Log.warn("{} queue.size > 1000, curSize:{}" + executor.getPoolName(), queueSize);
         }
     }
 
@@ -58,14 +68,14 @@ public class TaskQueue<E extends ExecutorPool, R extends Runnable> {
         synchronized (queue) {
             // 判断队列是否为空
             if (queue.isEmpty()) {
-                Log.error("Task queue is empty!");
+                Log.error("task queue is empty");
             }
 
             // 移除队列头
             Runnable temp = queue.remove();
             if (temp != task) {
-                // 消息不对, 报错
-                Log.error("Task is not the first! cur:" + task + ",first:" + temp);
+                // 消息不对，报错
+                Log.error("task is not the first, cur:{} first:{}", task, temp);
             }
 
             // 获取下一个任务
@@ -78,22 +88,5 @@ public class TaskQueue<E extends ExecutorPool, R extends Runnable> {
         if (nextTask != null) {
             executor.submit(nextTask);
         }
-    }
-
-    /**
-     * 获取队列数量
-     **/
-    public int getSize() {
-        return queue.size();
-    }
-
-    public void clear() {
-        synchronized (queue) {
-            queue.clear();
-        }
-    }
-
-    public E getExecutor() {
-        return executor;
     }
 }

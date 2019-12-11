@@ -5,6 +5,8 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 
 /**
+ * c2s packet数据分割校验
+ * <p>
  * https://www.jianshu.com/p/a0a51fd79f62
  * https://blog.csdn.net/zougen/article/details/79037675
  *

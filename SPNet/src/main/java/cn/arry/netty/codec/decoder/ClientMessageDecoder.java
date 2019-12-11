@@ -1,5 +1,6 @@
 package cn.arry.netty.codec.decoder;
 
+import cn.arry.Log;
 import cn.arry.netty.packet.C2SPacket;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
@@ -7,6 +8,9 @@ import io.netty.handler.codec.ByteToMessageDecoder;
 
 import java.util.List;
 
+/**
+ * c2s解码
+ */
 public class ClientMessageDecoder extends ByteToMessageDecoder {
     @Override
     protected final void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
@@ -39,15 +43,16 @@ public class ClientMessageDecoder extends ByteToMessageDecoder {
 //        }
 
         ByteBuf out = in.slice();
-//        int checksum = out.getShort(4);
-//        int code = out.getShort(6);
-//        long userID = out.getLong(8);
+        int checksum = out.getShort(4);
+        int code = out.getShort(6);
+        long userID = out.getLong(8);
         C2SPacket message = new C2SPacket();
         C2SPacket packet = message.read(out);
         in.readerIndex(in.readerIndex() + out.readerIndex());
 
         if (packet == null) {
-            // warning log
+            Log.error("ClientMessageDecoder->decode, packet is null, userId:{} code:{} checksum:{}", userID, code,
+                    checksum);
         }
 
         return packet;

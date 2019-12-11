@@ -5,6 +5,8 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
 
 /**
+ * s2s packet数据分割校验
+ *
  * @author 云顶之弈江流儿
  * @version 2019/12/10
  */

@@ -3,6 +3,9 @@ package cn.arry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * log
+ */
 public class Log {
     private static final Logger logger = LoggerFactory.getLogger("");
 

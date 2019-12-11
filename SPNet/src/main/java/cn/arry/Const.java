@@ -5,6 +5,8 @@ import cn.arry.netty.connection.NettyServerConnection;
 import io.netty.util.AttributeKey;
 
 /**
+ * 常量类
+ *
  * @author 云顶之弈江流儿
  * @version 2019/12/10
  */

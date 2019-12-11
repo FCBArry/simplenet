@@ -150,5 +150,7 @@
     <modules>
         <module>Protocol</module>
         <module>SPNet</module>
+        <module>Proxy</module>
+        <module>Test</module>
     </modules>
 </project>

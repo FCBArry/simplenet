@@ -2,25 +2,25 @@ package cn.arry.netty.handler;
 
 import cn.arry.Log;
 import cn.arry.netty.cmd.ICommand;
-import cn.arry.netty.component.ServerCmdComponent;
+import cn.arry.netty.component.CmdComponent;
 import cn.arry.netty.connection.AbstractConnection;
-import cn.arry.netty.manager.CmdCacheManager;
+import cn.arry.netty.manager.CmdManager;
 import cn.arry.netty.packet.Packet;
 
 public class CommonCmdHandler {
-    public boolean handlerQueue(AbstractConnection session, Packet packet) {
-        ICommand command = getCode(packet.getCode());
+    public void handle(AbstractConnection session, Packet packet) {
+        ICommand command = getCommand(packet.getCode());
         if (command == null) {
-            return false;
+            return;
         }
 
-        return ServerCmdComponent.getInstance().handlerQueue(session, packet, command);
+        CmdComponent.getInstance().handle(session, packet, command);
     }
 
-    public ICommand getCode(short code) {
-        ICommand command = CmdCacheManager.getCommand(code);
+    public ICommand getCommand(short code) {
+        ICommand command = CmdManager.getCommand(code);
         if (command == null) {
-            Log.error("CommonCmdHandler->getCode, code:{}", code);
+            Log.error("CommonCmdHandler->getCode error, code:{}", code);
         }
 
         return command;

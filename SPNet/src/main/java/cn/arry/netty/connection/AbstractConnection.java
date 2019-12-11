@@ -1,13 +1,14 @@
 package cn.arry.netty.connection;
 
-import cn.arry.netty.packet.C2SPacket;
-import com.google.protobuf.GeneratedMessage.Builder;
 import io.netty.channel.Channel;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.net.InetSocketAddress;
 
+/**
+ * 链接对象抽象类
+ */
 @Setter
 @Getter
 public abstract class AbstractConnection {
@@ -31,14 +32,14 @@ public abstract class AbstractConnection {
      */
     protected String clientIp;
 
+    public AbstractConnection() {
+
+    }
+
     public AbstractConnection(Channel channel) {
         this.channel = channel;
         InetSocketAddress inSocket = (InetSocketAddress) channel.remoteAddress();
         this.clientIp = inSocket.getAddress().getHostAddress();
-    }
-
-    public AbstractConnection() {
-
     }
 
     /**
@@ -54,20 +55,9 @@ public abstract class AbstractConnection {
     /**
      * 发送数据包
      */
-    public void send(Object packet) {
+    protected void send(Object packet) {
         if (channel != null && channel.isActive()) {
             channel.writeAndFlush(packet);
         }
-    }
-
-    /**
-     * client包
-     */
-    public void sendClientMessage(short code, Builder<?> builder) {
-        C2SPacket packet = new C2SPacket(code);
-        if (builder != null)
-            packet.setBuilder(builder);
-
-        send(packet);
     }
 }

@@ -20,6 +20,9 @@ import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
+/**
+ * s2s链接对象
+ */
 @Getter
 @Setter
 public class NettyServerConnection extends AbstractConnection {

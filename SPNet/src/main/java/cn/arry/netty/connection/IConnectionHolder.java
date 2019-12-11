@@ -1,13 +1,8 @@
 package cn.arry.netty.connection;
 
+/**
+ * 连接持有者接口
+ */
 public interface IConnectionHolder {
-    /**
-     * 连接关闭时的回调
-     */
     void onDisconnect();
-
-    /**
-     * 玩家主动退出
-     */
-    void onExit();
 }

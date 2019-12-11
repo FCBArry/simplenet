@@ -5,6 +5,9 @@ import cn.arry.netty.codec.decoder.ServerMessageDecoder;
 import cn.arry.netty.codec.encoder.ClientMessageEncoder;
 import cn.arry.netty.codec.encoder.ServerMessageEncoder;
 
+/**
+ * 编解码工厂类
+ */
 public class MessageCodecFactory {
     public static ServerMessageEncoder getSEncoder() {
         return new ServerMessageEncoder();

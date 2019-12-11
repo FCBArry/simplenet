@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
+ * packet基类
+ *
  * @author 云顶之弈江流儿
  * @version 2019/12/10
  */

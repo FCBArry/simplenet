@@ -8,6 +8,9 @@ import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
+/**
+ * client消息处理
+ */
 @Sharable
 public class ClientChannelHandler extends SimpleChannelInboundHandler<Packet> {
     private CommonCmdHandler cmdHandler;
@@ -20,12 +23,12 @@ public class ClientChannelHandler extends SimpleChannelInboundHandler<Packet> {
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         NettyClientConnection session = new NettyClientConnection(ctx.channel());
         ctx.channel().attr(Const.CLIENT_SESSION).set(session);
-        Log.info("server socket connect, address:{} channel:{}", ctx.channel().remoteAddress(), ctx.hashCode());
+        Log.info("socket connect, address:{} channel:{}", ctx.channel().remoteAddress(), ctx.hashCode());
     }
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-        Log.info("server socket disconnect, address:{} channel:{}", ctx.channel().remoteAddress(), ctx.hashCode());
+        Log.info("socket disconnect, address:{} channel:{}", ctx.channel().remoteAddress(), ctx.hashCode());
         NettyClientConnection clientConnection = ctx.channel().attr(Const.CLIENT_SESSION).get();
         if (clientConnection != null) {
             clientConnection.disconnect();
@@ -34,13 +37,13 @@ public class ClientChannelHandler extends SimpleChannelInboundHandler<Packet> {
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        Log.warn("server socket exception, address:{}", ctx.channel().remoteAddress(), cause);
+        Log.warn("socket exception, address:{}", ctx.channel().remoteAddress(), cause);
         ctx.close();
     }
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, Packet packet) throws Exception {
         NettyClientConnection session = ctx.channel().attr(Const.CLIENT_SESSION).get();
-        cmdHandler.handlerQueue(session, packet);
+        cmdHandler.handle(session, packet);
     }
 }

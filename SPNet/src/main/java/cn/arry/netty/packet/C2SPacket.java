@@ -1,10 +1,13 @@
 package cn.arry.netty.packet;
 
+import cn.arry.Log;
 import io.netty.buffer.ByteBuf;
 import lombok.Getter;
 import lombok.Setter;
 
 /**
+ * c2s,s2c传输包
+ *
  * @author 云顶之弈江流儿
  * @version 2019/12/10
  */
@@ -54,7 +57,7 @@ public class C2SPacket extends Packet {
                 }
             }
         } catch (Exception e) {
-
+            Log.error("C2SPacket->read error", e);
         }
 
         return this;
@@ -86,7 +89,7 @@ public class C2SPacket extends Packet {
             out.writeShort(sum);
             out.writerIndex(oldPosition);
         } catch (Exception e) {
-
+            Log.error("C2SPacket->write error, {}", toString(), e);
         }
     }
 

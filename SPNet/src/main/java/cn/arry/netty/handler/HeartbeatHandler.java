@@ -7,6 +7,8 @@ import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
 
 /**
+ * 消息检测
+ *
  * @author 云顶之弈江流儿
  * @version 2019/10/29
  */

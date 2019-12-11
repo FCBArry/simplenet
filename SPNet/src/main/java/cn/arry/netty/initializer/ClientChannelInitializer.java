@@ -8,13 +8,16 @@ import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
 
+/**
+ * client childHandler ChannelInitializer
+ */
 @Sharable
 public class ClientChannelInitializer extends ChannelInitializer<SocketChannel> {
     private ChannelHandler handler;
 
     public ClientChannelInitializer(ChannelHandler handler) {
         if (handler == null) {
-            throw new NullPointerException("Channel handler is null!");
+            throw new NullPointerException("Channel handler is null");
         }
 
         this.handler = handler;

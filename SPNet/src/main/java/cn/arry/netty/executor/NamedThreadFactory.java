@@ -5,10 +5,10 @@ import cn.arry.Log;
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.util.concurrent.ThreadFactory;
 
+/**
+ * 线程名工厂
+ */
 public class NamedThreadFactory implements ThreadFactory, UncaughtExceptionHandler {
-    /**
-     * 线程名，便于后期查bug使用
-     */
     private String threadName;
 
     public NamedThreadFactory(String threadName) {
@@ -23,6 +23,6 @@ public class NamedThreadFactory implements ThreadFactory, UncaughtExceptionHandl
     }
 
     public void uncaughtException(Thread thread, Throwable throwable) {
-        Log.error("Uncaught Exception in thread " + thread.getName(), throwable);
+        Log.error("uncaught exception in thread:{}", thread.getName(), throwable);
     }
 }

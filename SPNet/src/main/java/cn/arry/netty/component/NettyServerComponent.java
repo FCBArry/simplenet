@@ -18,28 +18,38 @@ import io.netty.handler.logging.LoggingHandler;
 
 import java.net.InetSocketAddress;
 
-public class NettyComponent implements IComponent {
+/**
+ * server component
+ * start as a server
+ */
+public class NettyServerComponent implements IComponent {
+    private static ChannelFuture channelFuture;
+
+    /**
+     * boss线程
+     */
+    private EventLoopGroup bossGroup;
+
+    /**
+     * work线程
+     */
+    private EventLoopGroup workGroup;
+
     private static class LazyHolder {
-        private static final NettyComponent INSTANCE = new NettyComponent();
+        private static final NettyServerComponent INSTANCE = new NettyServerComponent();
     }
 
-    public static NettyComponent getInstance() {
+    public static NettyServerComponent getInstance() {
         return LazyHolder.INSTANCE;
     }
 
-    private static ChannelFuture channelFuture;
-
-    private static EventLoopGroup bossGroup; // boss线程
-
-    private static EventLoopGroup workGroup; // 工作处理线程
-
     /**
-     * 启动函数，地址和端口号
+     * start
+     * TODO 调参
      */
     public boolean start(String address, int port, ChannelHandler handler) {
         boolean isEpoll = Epoll.isAvailable();
         int cpuNum = Runtime.getRuntime().availableProcessors();
-
         if (isEpoll) {
             bossGroup = new EpollEventLoopGroup(cpuNum);
             workGroup = new EpollEventLoopGroup(cpuNum * 2 + 1);
@@ -47,6 +57,7 @@ public class NettyComponent implements IComponent {
             bossGroup = new NioEventLoopGroup(cpuNum);
             workGroup = new NioEventLoopGroup(cpuNum * 2 + 1);
         }
+
         try {
             ServerBootstrap bootstrap = new ServerBootstrap();
             bootstrap.group(bossGroup, workGroup);
@@ -61,7 +72,6 @@ public class NettyComponent implements IComponent {
             bootstrap.option(ChannelOption.SO_RCVBUF, 1024 * 8);
             // 请求连接的最大队列长度，如果backlog参数的值大于操作系统限定的队列的最大长度，那么backlog参数无效
             bootstrap.option(ChannelOption.SO_BACKLOG, 1024);
-
             // 使用内存池的缓冲区重用机制
             bootstrap.option(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT);
 
@@ -75,31 +85,36 @@ public class NettyComponent implements IComponent {
             bootstrap.childOption(ChannelOption.SO_SNDBUF, 1024 * 8);
             // 使用内存池的缓冲区重用机制
             bootstrap.childOption(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT);
-
-            bootstrap.childOption(ChannelOption.WRITE_BUFFER_WATER_MARK, new WriteBufferWaterMark(1024 * 64, 1024 * 128));
+            bootstrap.childOption(ChannelOption.WRITE_BUFFER_WATER_MARK, new WriteBufferWaterMark(1024 * 64,
+                    1024 * 128));
 
             channelFuture = bootstrap.bind(new InetSocketAddress(address, port));
             channelFuture.sync();
 
-            Log.info("NettyComponentSocket->start, service start success address:{} port:{} isEpoll:{}", address, port, isEpoll);
+            Log.info("NettyComponentSocket->start ok, address:{} port:{} isEpoll:{}", address, port, isEpoll);
             return true;
         } catch (Exception e) {
-            Log.error("NettyComponent->start, init netty exception, address:{} port:{}", address, port, e);
+            Log.error("NettyComponent->start error, address:{} port:{}", address, port, e);
             return false;
         }
     }
 
     public void stop() {
         try {
-            if (channelFuture == null || bossGroup == null || workGroup == null)
-                return;
+            if (channelFuture != null) {
+                channelFuture.channel().close().syncUninterruptibly();
+                channelFuture.channel().closeFuture().syncUninterruptibly();
+            }
 
-            channelFuture.channel().close().syncUninterruptibly();
-            channelFuture.channel().closeFuture().syncUninterruptibly();
-            bossGroup.shutdownGracefully().syncUninterruptibly();
-            workGroup.shutdownGracefully().syncUninterruptibly();
+            if (workGroup != null) {
+                workGroup.shutdownGracefully().syncUninterruptibly();
+            }
+
+            if (bossGroup != null) {
+                bossGroup.shutdownGracefully().syncUninterruptibly();
+            }
         } catch (Exception e) {
-            Log.error("NettyComponent->stop, netty stop error", e);
+            Log.error("NettyServerComponent->stop error", e);
         }
     }
 }

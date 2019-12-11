@@ -1,9 +1,8 @@
 package cn.arry.netty.component;
 
+/**
+ * 组件接口
+ */
 public interface IComponent {
-    /**
-     * 停止组件
-     */
     void stop();
-
 }
