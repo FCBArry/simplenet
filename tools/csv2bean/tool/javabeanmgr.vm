@@ -1,0 +1,48 @@
+#set($classNameBean = ${className} + 'Bean')
+package com.road.common.mgr;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import com.road.common.bean.${classNameBean};
+import com.road.common.manager.CSVDaoManager;
+import log.Log;
+
+public class ${className}Mgr
+{
+    private static volatile Map<Integer, ${classNameBean}> map;
+
+    public static boolean init()
+    {
+        return reload();
+    }
+
+    public static boolean reload()
+    {
+        try
+        {
+            Map<Integer, ${classNameBean}> newMap = new HashMap<>();
+            List<${classNameBean}> list = CSVDaoManager.getBeanList(${classNameBean}.class);
+
+            for (${classNameBean} bean : list)
+            {
+                newMap.put(bean.get${primaryKey}(), bean);
+            }
+
+            map = newMap;
+        }
+        catch (Exception e)
+        {
+            Log.error("${className}Mgr reload error", e);
+            return false;
+        }
+
+        return true;
+    }
+
+    public static ${classNameBean} get${classNameBean}(int id)
+    {
+        return map.get(id);
+    }
+}

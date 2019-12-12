@@ -1,5 +1,6 @@
 package cn.arry;
 
+import cn.arry.meta.ServerConfig;
 import cn.arry.netty.component.NettyServerComponent;
 import cn.arry.netty.component.ProxyConnComponent;
 import cn.arry.netty.handler.ClientChannelHandler;
@@ -8,7 +9,6 @@ import cn.arry.netty.initializer.ClientChannelInitializer;
 import cn.arry.netty.manager.CmdManager;
 import cn.arry.redis.RedisMgr;
 import cn.arry.redis.pool.Node;
-import cn.arry.type.ServerConfig;
 import cn.arry.utils.FileUtil;
 
 import java.util.ArrayList;

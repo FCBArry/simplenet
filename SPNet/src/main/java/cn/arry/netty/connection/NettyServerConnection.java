@@ -1,13 +1,13 @@
 package cn.arry.netty.connection;
 
 import cn.arry.CmdType;
-import cn.arry.Const;
 import cn.arry.Log;
 import cn.arry.gen.server.SCommonMsg.ServerRegisterProto;
 import cn.arry.netty.handler.ServerChannelHandler;
 import cn.arry.netty.handler.cmd.CommonCmdHandler;
 import cn.arry.netty.initializer.ServerChannelInitializer;
 import cn.arry.netty.packet.S2SPacket;
+import cn.arry.type.ConstType;
 import com.google.protobuf.GeneratedMessage.Builder;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
@@ -141,7 +141,7 @@ public class NettyServerConnection extends AbstractConnection {
 
             if (connect()) {
                 sendLogin();
-                channel.attr(Const.SERVER_SESSION).set(this);
+                channel.attr(ConstType.SERVER_SESSION).set(this);
                 Log.info("reconnectImpl ip:{}, port:{}. sessionId:{} ProxyClient Connect To Server Successfully!", getAddress(), getPort(), channel.id());
                 return;
             }
@@ -157,7 +157,7 @@ public class NettyServerConnection extends AbstractConnection {
 
     public void sendLogin() {
         ServerRegisterProto.Builder builder = ServerRegisterProto.newBuilder();
-        builder.setServerId(Const.TEMP_GAME_SERVER_ID);
+        builder.setServerId(ConstType.TEMP_GAME_SERVER_ID);
         sendServerMessage(CmdType.S2S_SERVER_LOGIN, builder);
         Log.info("Server->ProxyServer.sendRegister, ip:{} port:{} serverId:{}", getAddress(), getPort(),
                 builder.getServerId());

@@ -1,0 +1,44 @@
+package com.road.common.entity;
+
+#foreach( $field in $fields )
+#if( $field.getJavaType() == "Date")
+import java.util.Date;
+#break;
+#end
+#end
+
+import database.DataObject;
+import database.DataOption;
+
+public class ${className}Info extends DataObject 
+{
+#foreach( $field in $fields )
+	/**
+	 * $field.getComment()
+	 */
+	private $field.getJavaType() $field.getLowerName();
+	
+#end
+#foreach( $field in $fields )
+	public $field.getJavaType() get$field.getUpperName()()
+	{
+		return $field.getLowerName();
+	}
+
+	public void set$field.getUpperName()($field.getJavaType() $field.getLowerName())
+	{
+#if ($field.getJavaType() != "Date" && $field.getJavaType() != "String")
+		if($field.getLowerName() != this.$field.getLowerName())
+#else
+		if($field.getLowerName() != null && ! ${field.getLowerName()}.equals(this.${field.getLowerName()}))
+#end
+		{
+			this.$field.getLowerName() = $field.getLowerName();
+			setOp(DataOption.UPDATE);
+		}
+	}
+#if($foreach.hasNext)
+
+#end
+#end
+}

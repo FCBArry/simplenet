@@ -1,10 +1,10 @@
 package cn.arry.netty.component;
 
 import cn.arry.Log;
+import cn.arry.meta.ServerConfig;
 import cn.arry.netty.connection.NettyServerConnection;
 import cn.arry.netty.handler.cmd.CommonCmdHandler;
 import cn.arry.netty.packet.S2SPacket;
-import cn.arry.type.ServerConfig;
 import com.google.protobuf.GeneratedMessage.Builder;
 
 import java.util.ArrayList;

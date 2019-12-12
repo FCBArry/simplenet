@@ -1,10 +1,10 @@
 package cn.arry.netty.handler;
 
-import cn.arry.Const;
 import cn.arry.Log;
 import cn.arry.netty.connection.NettyServerConnection;
 import cn.arry.netty.handler.cmd.CommonCmdHandler;
 import cn.arry.netty.manager.ServerClientManager;
+import cn.arry.type.ConstType;
 import io.netty.channel.ChannelHandlerContext;
 
 /**
@@ -20,7 +20,7 @@ public class ProxyChannelHandler extends ServerChannelHandler {
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         Log.info("ProxyChannelHandler->channelInactive, server socket disconnect, address:{} channel{}",
                 ctx.channel().remoteAddress(), ctx.hashCode());
-        NettyServerConnection serverConnection = ctx.channel().attr(Const.SERVER_SESSION).get();
+        NettyServerConnection serverConnection = ctx.channel().attr(ConstType.SERVER_SESSION).get();
         if (serverConnection != null) {
             serverConnection.disconnect();
             ServerClientManager.removeServerClient(serverConnection);

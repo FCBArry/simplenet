@@ -1,0 +1,24 @@
+#set( $infoName = "${className}Info" )
+package com.road.common.dao;
+
+import database.IBaseDao;
+import java.util.List;
+
+import com.road.common.entity.${infoName};
+
+public interface I${infoName}Dao extends IBaseDao<${infoName}>
+{
+#if( $genGetByUserID )
+	List<${infoName}> get${infoName}ByUserID(long userID);
+#end
+#if( $genCacheCode)
+
+	public List<${infoName}> get${infoName}ByUserIDFromRedis(byte[] key);
+
+    public boolean addOrUpdateBatchToRedis(byte[] key, List<${infoName}> list);
+    
+    public void addToRedis(byte[] key, ${infoName} info);
+        
+   	public ${infoName} getByKeyFromRedis(byte[] key);
+#end
+}

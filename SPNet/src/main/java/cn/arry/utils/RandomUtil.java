@@ -1,11 +1,11 @@
 package cn.arry.utils;
 
-import cn.arry.Const;
+import cn.arry.type.ConstType;
 
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
- * 随机
+ * 随机工具
  */
 public class RandomUtil {
     public static int next(int maxValue) {
@@ -43,7 +43,7 @@ public class RandomUtil {
      * 检测概率
      */
     public static boolean checkProbability(int probability) {
-        int probabilityRandom = next(Const.BasePercentIntNumber);
+        int probabilityRandom = next(ConstType.BasePercentIntNumber);
         return probabilityRandom <= probability;
     }
 
@@ -51,6 +51,6 @@ public class RandomUtil {
      * 随机一个boolean值
      */
     public static boolean randomBoolean() {
-        return checkProbability(Const.BasePercentIntNumber / 2);
+        return checkProbability(ConstType.BasePercentIntNumber / 2);
     }
 }

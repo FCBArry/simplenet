@@ -1,0 +1,395 @@
+#set( $infoName = "${className}Info" )
+#set( $lowInfoName = "${lowClassName}Info" )
+package com.road.common.dao.impl;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Types;
+import java.util.List;
+
+import database.BaseDao;
+import database.DBParamWrapper;
+import database.DataExecutor;
+import database.DBHelper;
+
+import database.DataOption;
+import com.road.common.dao.I${infoName}Dao;
+import com.road.common.entity.${infoName};
+#if( $genCacheCode)
+import gen.Redis${className}Msg.Redis${className}InfoProto;
+import redis.PlayerCacheMgr;
+import config.GlobalConfigManager;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.ArrayList;
+import com.road.util.Log;
+#foreach( $field in $fields )
+#if( $field.getJavaType() == "Date")
+import com.road.util.TimeUtil;
+#break;
+#end
+#if( $field.isPrimaryKey() )
+#set( $PrimaryKey = ${field.getUpperName()} )
+#end
+#end
+#end
+
+public class ${infoName}DaoImpl extends BaseDao<${infoName}> implements I${infoName}Dao
+{
+	public ${infoName}DaoImpl(DBHelper helper)
+	{
+		super(helper);
+	}
+
+	@Override
+	public boolean add(${infoName} ${lowInfoName})
+	{
+		boolean result = false;
+		String sql = ${insertSql};
+		DBParamWrapper params = new DBParamWrapper();
+		#foreach( $field in $fields )
+params.put(Types.${field.getParamsType()}, ${lowInfoName}.get${field.getUpperName()}());
+		#end
+	
+		result = getDBHelper().execNoneQuery(sql, params) > -1 ? true : false;
+		if (result) 
+			${lowInfoName}.setOp(DataOption.NONE);
+			
+		return result;
+	}
+
+	@Override
+	public boolean update(${infoName} ${lowInfoName})
+	{
+		if(${lowInfoName}.getOp() == DataOption.NONE)
+			return true;
+
+		boolean result = false;
+		String sql = ${updateSql};
+		DBParamWrapper params = new DBParamWrapper();
+#foreach( $field in $fields )
+#if( !$field.isPrimaryKey() )
+		params.put(Types.${field.getParamsType()}, ${lowInfoName}.get${field.getUpperName()}());
+#end
+#end
+#foreach( $field in $fields )
+#if( $field.isPrimaryKey() )
+		params.put(Types.${field.getParamsType()}, ${lowInfoName}.get${field.getUpperName()}());
+#end
+#end
+	
+		result = getDBHelper().execNoneQuery(sql, params) > -1 ? true : false;
+		if (result) 
+			${lowInfoName}.setOp(DataOption.NONE);
+			
+		return result;
+	}
+
+	@Override
+	public boolean delete(${infoName} ${lowInfoName})
+	{
+		boolean result = false;
+		String sql = ${deleteSql};
+		DBParamWrapper params = new DBParamWrapper();
+#foreach( $field in $fields )
+#if( $field.isPrimaryKey() )
+		params.put(Types.${field.getParamsType()}, ${lowInfoName}.get${field.getUpperName()}());
+#end
+#end
+		result = getDBHelper().execNoneQuery(sql, params) > -1 ? true : false;
+		return result;
+	}
+
+	@Override
+	public boolean addOrUpdate(${infoName} ${lowInfoName})
+	{
+		boolean result = false;
+		String sql = ${addOrUpdateSql};
+		if(${lowInfoName}.getOp() == DataOption.NONE)
+			return true;
+		DBParamWrapper params = new DBParamWrapper();
+#foreach( $field in $fields )
+		params.put(Types.${field.getParamsType()}, ${lowInfoName}.get${field.getUpperName()}());
+#end
+#foreach( $field in $fields )
+#if( !$field.isPrimaryKey() )
+		params.put(Types.${field.getParamsType()}, ${lowInfoName}.get${field.getUpperName()}());
+#end
+#end
+		result = getDBHelper().execNoneQuery(sql, params) > -1 ? true : false;
+		if (result) 
+			${lowInfoName}.setOp(DataOption.NONE);
+			
+		return result;
+	}
+
+	@Override
+	public boolean deleteByKey(Object... ids)
+	{
+		boolean result = false;
+		String sql = ${deleteSql};
+		DBParamWrapper params = new DBParamWrapper();
+#set ($idx = 0)
+#foreach( $field in $fields )
+#if( $field.isPrimaryKey() )
+		params.put(Types.${field.getParamsType()}, ids[$idx]);
+#set ($idx = $idx + 1)
+#end
+#end
+		result = getDBHelper().execNoneQuery(sql, params) > -1 ? true : false;
+		return result;
+	}
+
+	@Override
+	public ${infoName} getByKey(Object... ids)
+	{
+		String sql = ${selectSql};
+		DBParamWrapper params = new DBParamWrapper();
+#set ($idx = 0)
+#foreach( $field in $fields )
+#if( $field.isPrimaryKey() )
+		params.put(Types.${field.getParamsType()}, ids[$idx]);
+#set ($idx = $idx + 1)
+#end
+#end
+		${infoName} ${lowInfoName} = query(sql, params);		return ${lowInfoName};
+	}
+
+	@Override
+	public List<${infoName}> listAll()
+	{
+		String sql = "select * from ${tableName};";
+		List<${infoName}> ${lowInfoName}s = queryList(sql);		return ${lowInfoName}s;
+	}
+
+	@Override
+	public int[] addOrUpdateBatch(List<${infoName}> ${lowInfoName}s)
+	{
+		String sql = ${addOrUpdateSql};
+		int[] effectedRows = getDBHelper().sqlBatch(sql, ${lowInfoName}s, new DataExecutor<int[]>()
+			{
+				@Override
+				public int[] execute(PreparedStatement statement, Object... objects) throws Exception
+				{
+					@SuppressWarnings("unchecked")
+					List<${infoName}> ${lowInfoName}s = (List<${infoName}>)objects[0];
+					for (${infoName} ${lowInfoName} : ${lowInfoName}s)
+					{
+						if(${lowInfoName}.getOp() == DataOption.NONE)
+							continue;
+						DBParamWrapper params = new DBParamWrapper();
+#foreach( $field in $fields )
+						params.put(Types.${field.getParamsType()}, ${lowInfoName}.get${field.getUpperName()}());
+#end
+#foreach( $field in $fields )
+#if( !$field.isPrimaryKey() )
+						params.put(Types.${field.getParamsType()}, ${lowInfoName}.get${field.getUpperName()}());
+#end
+#end
+		
+						statement = getDBHelper().prepareCommand(statement, params);
+						statement.addBatch();
+					}
+					return statement.executeBatch();
+				}
+			});
+			for(int i=0; i<effectedRows.length; ++i)
+			{
+				if (effectedRows[i] > -1)
+					${lowInfoName}s.get(i).setOp(DataOption.NONE);
+			}
+		return effectedRows;
+	}
+
+	@Override
+	public int[] deleteBatch(List<${infoName}> ${lowInfoName}s)
+	{
+		String sql = ${deleteSql};
+		int[] effectedRows = getDBHelper().sqlBatch(sql, ${lowInfoName}s, new DataExecutor<int[]>()
+		{
+			@Override
+			public int[] execute(PreparedStatement statement, Object... objects) throws Exception
+			{
+				@SuppressWarnings("unchecked")
+				List<${infoName}>${lowInfoName}s = (List<${infoName}>)objects[0];
+				for (${infoName} ${lowInfoName} : ${lowInfoName}s)
+				{
+					DBParamWrapper params = new DBParamWrapper();
+#foreach( $field in $fields )
+#if( $field.isPrimaryKey() )
+					params.put(Types.${field.getParamsType()}, ${lowInfoName}.get${field.getUpperName()}());
+#end
+#end
+					statement = getDBHelper().prepareCommand(statement, params);
+					statement.addBatch();
+				}
+				return statement.executeBatch();
+			}
+		});
+		return effectedRows;
+	}
+	
+	@Override
+	public ${infoName} rsToEntity(ResultSet rs) throws Exception
+	{
+		${infoName} ${lowInfoName} = null;
+		if (pool != null)
+			${lowInfoName} = pool.borrowObject();
+		else
+			${lowInfoName} = new ${infoName}();
+
+#foreach( $field in $fields )
+		${lowInfoName}.set${field.getUpperName()}(rs.get${field.getUpperJavaTypeName()}("${field.getName()}"));
+#end
+		
+		${lowInfoName}.setOp(DataOption.NONE);
+		return ${lowInfoName};
+	}
+	
+#if( $genGetByUserID )
+	@Override
+	public List<${infoName}> get${infoName}ByUserID(long userID)
+	{
+		String sql = "select * from ${tableName} where `userID` = ?;";
+		DBParamWrapper params = new DBParamWrapper();
+		params.put(Types.BIGINT, userID);
+		List<${infoName}> ${lowInfoName} = queryList(sql,params);
+		return ${lowInfoName};
+	}
+#end
+#if( $genCacheCode)
+
+	@Override
+	public List<${infoName}> get${infoName}ByUserIDFromRedis(byte[] key)
+    {
+    	try
+    	{
+        	Map<byte[], byte[]> map = PlayerCacheMgr.hgetAll(key);
+        	if (map.isEmpty())
+            	return null;
+        
+        	List<${infoName}> list = new ArrayList<>();
+        	for (byte[] data : map.values())
+       	 	{
+				${infoName} info = null;
+				if (pool != null)
+					info = pool.borrowObject();
+				else
+					info = new ${infoName}();
+				
+				Redis${infoName}Proto proto = Redis${infoName}Proto.parseFrom(data);
+#foreach( $field in $fields )
+				if(proto.has${field.getUpperName()}())
+#if( $field.getJavaType() == "Date")
+					info.set${field.getUpperName()}(TimeUtil.toDate(proto.get${field.getUpperName()}()));
+#else
+					info.set${field.getUpperName()}(proto.get${field.getUpperName()}());
+#end
+#end
+				list.add(info);
+       		}
+        	return list;
+    	}
+    	catch (Exception e)
+    	{
+        	Log.error("{}", String.valueOf(key), e);
+    	}
+    	return null;
+    }
+
+	@Override
+    public boolean addOrUpdateBatchToRedis(byte[] key, List<${infoName}> list)
+    {
+        if (list.isEmpty())
+            return false;
+
+        Map<byte[], byte[]> map = new HashMap<>();
+       	for (${infoName} info : list)
+        {
+			Redis${infoName}Proto.Builder builder = Redis${infoName}Proto.newBuilder();
+#foreach( $field in $fields )
+#if( $field.getJavaType() == "Date")
+			if(info.get${field.getUpperName()}() != null)
+				builder.set${field.getUpperName()}(TimeUtil.toDateTimeString(info.get${field.getUpperName()}()));
+#else
+#if( $field.getJavaType() == "String")
+			if(info.get${field.getUpperName()}() != null)
+#end
+			builder.set${field.getUpperName()}(info.get${field.getUpperName()}());
+#end
+#end
+			map.put(String.valueOf(info.get${PrimaryKey}()).getBytes(), builder.build().toByteArray());
+        }
+        
+        return PlayerCacheMgr.hmsetAndExpired(key, map, 
+        	 GlobalConfigManager.getInstance().getVariableConfig().getRedisCacheTime());
+    }
+    
+	@Override
+    public ${infoName} getByKeyFromRedis(byte[] key)
+    {
+   		try
+   		{
+    		byte[] data = PlayerCacheMgr.get(key);
+
+    		if (null == data)
+            	return null;
+
+			${infoName} info = null;
+			if (pool != null)
+				info = pool.borrowObject();
+			else
+				info = new ${infoName}();
+				
+			Redis${infoName}Proto proto = Redis${infoName}Proto.parseFrom(data);
+#foreach( $field in $fields )
+			if(proto.has${field.getUpperName()}())
+#if( $field.getJavaType() == "Date")
+				info.set${field.getUpperName()}(TimeUtil.toDate(proto.get${field.getUpperName()}()));
+#else
+				info.set${field.getUpperName()}(proto.get${field.getUpperName()}());
+#end
+#end
+        	return info;
+    	}
+    	catch (Exception e)
+    	{
+            Log.error("{}", new String(key), e);
+    	}
+
+    	return null;
+    };
+    
+	@Override
+    public void addToRedis(byte[] key, ${infoName} info)
+    {
+        if (info == null || info.getOp() == DataOption.NONE)
+            return;
+      
+        try
+        {
+			Redis${infoName}Proto.Builder builder = Redis${infoName}Proto.newBuilder();
+#foreach( $field in $fields )
+#if( $field.getJavaType() == "Date")
+			if(info.get${field.getUpperName()}() != null)
+				builder.set${field.getUpperName()}(TimeUtil.toDateTimeString(info.get${field.getUpperName()}()));
+#else
+#if( $field.getJavaType() == "String")
+			if(info.get${field.getUpperName()}() != null)
+				builder.set${field.getUpperName()}(info.get${field.getUpperName()}());
+#else
+			builder.set${field.getUpperName()}(info.get${field.getUpperName()}());
+#end
+#end
+#end
+			
+			PlayerCacheMgr.setAndExpireByte(key, builder.build().toByteArray(),
+			 GlobalConfigManager.getInstance().getVariableConfig().getRedisCacheTime());
+        }
+        catch (Exception e)
+        {
+            Log.error("{}", new String(key), e);
+        }
+    };
+#end
+}

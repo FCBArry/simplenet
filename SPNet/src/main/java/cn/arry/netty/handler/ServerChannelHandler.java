@@ -1,11 +1,11 @@
 package cn.arry.netty.handler;
 
-import cn.arry.Const;
 import cn.arry.Log;
 import cn.arry.netty.connection.AbstractConnection;
 import cn.arry.netty.connection.NettyServerConnection;
 import cn.arry.netty.handler.cmd.CommonCmdHandler;
 import cn.arry.netty.packet.S2SPacket;
+import cn.arry.type.ConstType;
 import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
@@ -23,9 +23,9 @@ public class ServerChannelHandler extends SimpleChannelInboundHandler<S2SPacket>
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        if (ctx.channel().attr(Const.SERVER_SESSION).get() == null) {
+        if (ctx.channel().attr(ConstType.SERVER_SESSION).get() == null) {
             NettyServerConnection session = new NettyServerConnection(ctx.channel());
-            ctx.channel().attr(Const.SERVER_SESSION).set(session);
+            ctx.channel().attr(ConstType.SERVER_SESSION).set(session);
             Log.info("socket connect, address:{} channel:{} sessionId:{}", ctx.channel().remoteAddress(),
                     ctx.hashCode(), ctx.channel().id());
         }
@@ -34,7 +34,7 @@ public class ServerChannelHandler extends SimpleChannelInboundHandler<S2SPacket>
     @Override
     public void channelInactive(ChannelHandlerContext ctx) throws Exception {
         Log.info("socket disconnect, address:{} channel:{}", ctx.channel().remoteAddress(), ctx.hashCode());
-        NettyServerConnection serverSession = ctx.channel().attr(Const.SERVER_SESSION).get();
+        NettyServerConnection serverSession = ctx.channel().attr(ConstType.SERVER_SESSION).get();
         if (serverSession != null) {
             serverSession.disconnect();
         }
@@ -48,7 +48,7 @@ public class ServerChannelHandler extends SimpleChannelInboundHandler<S2SPacket>
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, S2SPacket packet) throws Exception {
-        AbstractConnection session = ctx.channel().attr(Const.SERVER_SESSION).get();
+        AbstractConnection session = ctx.channel().attr(ConstType.SERVER_SESSION).get();
         cmdHandler.handle(session, packet);
     }
 }

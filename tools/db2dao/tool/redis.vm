@@ -1,0 +1,22 @@
+option java_package = "gen";
+option java_outer_classname = "Redis${className}Msg";
+
+message Redis${className}InfoProto
+{
+#set( $index = 1 )
+#foreach( $field in $fields )
+#if( $field.getJavaType() == "boolean")
+#set( $type = "bool" )
+#elseif( $field.getJavaType() == "int" )
+#set( $type = "int32" )
+#elseif( $field.getJavaType() == "long" )
+#set( $type = "int64" )
+#elseif( $field.getJavaType() == "float")
+#set( $type = "float" )
+#elseif( $field.getJavaType() == "String" || $field.getJavaType() == "Date")
+#set( $type = "string" )
+#end
+	optional $type $field.getLowerName() = $index;     // $field.getComment()
+#set($index =$index+1)
+#end
+}
