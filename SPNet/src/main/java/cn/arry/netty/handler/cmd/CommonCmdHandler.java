@@ -1,4 +1,4 @@
-package cn.arry.netty.handler;
+package cn.arry.netty.handler.cmd;
 
 import cn.arry.Log;
 import cn.arry.netty.cmd.ICommand;

@@ -489,11 +489,611 @@ public final class CommonMsg {
         // @@protoc_insertion_point(class_scope:cn.arry.gen.common.TestProto)
     }
 
+    public interface ServerIdInfoProtoOrBuilder extends
+            // @@protoc_insertion_point(interface_extends:cn.arry.gen.common.ServerIdInfoProto)
+            com.google.protobuf.MessageOrBuilder {
+
+        /**
+         * <code>optional int32 serverId = 1;</code>
+         * <p>
+         * <pre>
+         * serverid
+         * </pre>
+         */
+        boolean hasServerId();
+
+        /**
+         * <code>optional int32 serverId = 1;</code>
+         * <p>
+         * <pre>
+         * serverid
+         * </pre>
+         */
+        int getServerId();
+
+        /**
+         * <code>optional int32 loadValue = 2;</code>
+         * <p>
+         * <pre>
+         * loadValue
+         * </pre>
+         */
+        boolean hasLoadValue();
+
+        /**
+         * <code>optional int32 loadValue = 2;</code>
+         * <p>
+         * <pre>
+         * loadValue
+         * </pre>
+         */
+        int getLoadValue();
+    }
+
+    /**
+     * Protobuf type {@code cn.arry.gen.common.ServerIdInfoProto}
+     * <p>
+     * <pre>
+     * 服务器信息
+     * </pre>
+     */
+    public static final class ServerIdInfoProto extends
+            com.google.protobuf.GeneratedMessage implements
+            // @@protoc_insertion_point(message_implements:cn.arry.gen.common.ServerIdInfoProto)
+            ServerIdInfoProtoOrBuilder {
+        // Use ServerIdInfoProto.newBuilder() to construct.
+        private ServerIdInfoProto(com.google.protobuf.GeneratedMessage.Builder<?> builder) {
+            super(builder);
+            this.unknownFields = builder.getUnknownFields();
+        }
+
+        private ServerIdInfoProto(boolean noInit) {
+            this.unknownFields = com.google.protobuf.UnknownFieldSet.getDefaultInstance();
+        }
+
+        private static final ServerIdInfoProto defaultInstance;
+
+        public static ServerIdInfoProto getDefaultInstance() {
+            return defaultInstance;
+        }
+
+        public ServerIdInfoProto getDefaultInstanceForType() {
+            return defaultInstance;
+        }
+
+        private final com.google.protobuf.UnknownFieldSet unknownFields;
+
+        @java.lang.Override
+        public final com.google.protobuf.UnknownFieldSet
+        getUnknownFields() {
+            return this.unknownFields;
+        }
+
+        private ServerIdInfoProto(
+                com.google.protobuf.CodedInputStream input,
+                com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+                throws com.google.protobuf.InvalidProtocolBufferException {
+            initFields();
+            int mutable_bitField0_ = 0;
+            com.google.protobuf.UnknownFieldSet.Builder unknownFields =
+                    com.google.protobuf.UnknownFieldSet.newBuilder();
+            try {
+                boolean done = false;
+                while (!done) {
+                    int tag = input.readTag();
+                    switch (tag) {
+                        case 0:
+                            done = true;
+                            break;
+                        default: {
+                            if (!parseUnknownField(input, unknownFields,
+                                    extensionRegistry, tag)) {
+                                done = true;
+                            }
+                            break;
+                        }
+                        case 8: {
+                            bitField0_ |= 0x00000001;
+                            serverId_ = input.readInt32();
+                            break;
+                        }
+                        case 16: {
+                            bitField0_ |= 0x00000002;
+                            loadValue_ = input.readInt32();
+                            break;
+                        }
+                    }
+                }
+            } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+                throw e.setUnfinishedMessage(this);
+            } catch (java.io.IOException e) {
+                throw new com.google.protobuf.InvalidProtocolBufferException(
+                        e.getMessage()).setUnfinishedMessage(this);
+            } finally {
+                this.unknownFields = unknownFields.build();
+                makeExtensionsImmutable();
+            }
+        }
+
+        public static final com.google.protobuf.Descriptors.Descriptor
+        getDescriptor() {
+            return cn.arry.gen.common.CommonMsg.internal_static_cn_arry_gen_common_ServerIdInfoProto_descriptor;
+        }
+
+        protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+        internalGetFieldAccessorTable() {
+            return cn.arry.gen.common.CommonMsg.internal_static_cn_arry_gen_common_ServerIdInfoProto_fieldAccessorTable
+                    .ensureFieldAccessorsInitialized(
+                            cn.arry.gen.common.CommonMsg.ServerIdInfoProto.class, cn.arry.gen.common.CommonMsg.ServerIdInfoProto.Builder.class);
+        }
+
+        public static com.google.protobuf.Parser<ServerIdInfoProto> PARSER =
+                new com.google.protobuf.AbstractParser<ServerIdInfoProto>() {
+                    public ServerIdInfoProto parsePartialFrom(
+                            com.google.protobuf.CodedInputStream input,
+                            com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+                            throws com.google.protobuf.InvalidProtocolBufferException {
+                        return new ServerIdInfoProto(input, extensionRegistry);
+                    }
+                };
+
+        @java.lang.Override
+        public com.google.protobuf.Parser<ServerIdInfoProto> getParserForType() {
+            return PARSER;
+        }
+
+        private int bitField0_;
+        public static final int SERVERID_FIELD_NUMBER = 1;
+        private int serverId_;
+
+        /**
+         * <code>optional int32 serverId = 1;</code>
+         * <p>
+         * <pre>
+         * serverid
+         * </pre>
+         */
+        public boolean hasServerId() {
+            return ((bitField0_ & 0x00000001) == 0x00000001);
+        }
+
+        /**
+         * <code>optional int32 serverId = 1;</code>
+         * <p>
+         * <pre>
+         * serverid
+         * </pre>
+         */
+        public int getServerId() {
+            return serverId_;
+        }
+
+        public static final int LOADVALUE_FIELD_NUMBER = 2;
+        private int loadValue_;
+
+        /**
+         * <code>optional int32 loadValue = 2;</code>
+         * <p>
+         * <pre>
+         * loadValue
+         * </pre>
+         */
+        public boolean hasLoadValue() {
+            return ((bitField0_ & 0x00000002) == 0x00000002);
+        }
+
+        /**
+         * <code>optional int32 loadValue = 2;</code>
+         * <p>
+         * <pre>
+         * loadValue
+         * </pre>
+         */
+        public int getLoadValue() {
+            return loadValue_;
+        }
+
+        private void initFields() {
+            serverId_ = 0;
+            loadValue_ = 0;
+        }
+
+        private byte memoizedIsInitialized = -1;
+
+        public final boolean isInitialized() {
+            byte isInitialized = memoizedIsInitialized;
+            if (isInitialized == 1) return true;
+            if (isInitialized == 0) return false;
+
+            memoizedIsInitialized = 1;
+            return true;
+        }
+
+        public void writeTo(com.google.protobuf.CodedOutputStream output)
+                throws java.io.IOException {
+            getSerializedSize();
+            if (((bitField0_ & 0x00000001) == 0x00000001)) {
+                output.writeInt32(1, serverId_);
+            }
+            if (((bitField0_ & 0x00000002) == 0x00000002)) {
+                output.writeInt32(2, loadValue_);
+            }
+            getUnknownFields().writeTo(output);
+        }
+
+        private int memoizedSerializedSize = -1;
+
+        public int getSerializedSize() {
+            int size = memoizedSerializedSize;
+            if (size != -1) return size;
+
+            size = 0;
+            if (((bitField0_ & 0x00000001) == 0x00000001)) {
+                size += com.google.protobuf.CodedOutputStream
+                        .computeInt32Size(1, serverId_);
+            }
+            if (((bitField0_ & 0x00000002) == 0x00000002)) {
+                size += com.google.protobuf.CodedOutputStream
+                        .computeInt32Size(2, loadValue_);
+            }
+            size += getUnknownFields().getSerializedSize();
+            memoizedSerializedSize = size;
+            return size;
+        }
+
+        private static final long serialVersionUID = 0L;
+
+        @java.lang.Override
+        protected java.lang.Object writeReplace()
+                throws java.io.ObjectStreamException {
+            return super.writeReplace();
+        }
+
+        public static cn.arry.gen.common.CommonMsg.ServerIdInfoProto parseFrom(
+                com.google.protobuf.ByteString data)
+                throws com.google.protobuf.InvalidProtocolBufferException {
+            return PARSER.parseFrom(data);
+        }
+
+        public static cn.arry.gen.common.CommonMsg.ServerIdInfoProto parseFrom(
+                com.google.protobuf.ByteString data,
+                com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+                throws com.google.protobuf.InvalidProtocolBufferException {
+            return PARSER.parseFrom(data, extensionRegistry);
+        }
+
+        public static cn.arry.gen.common.CommonMsg.ServerIdInfoProto parseFrom(byte[] data)
+                throws com.google.protobuf.InvalidProtocolBufferException {
+            return PARSER.parseFrom(data);
+        }
+
+        public static cn.arry.gen.common.CommonMsg.ServerIdInfoProto parseFrom(
+                byte[] data,
+                com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+                throws com.google.protobuf.InvalidProtocolBufferException {
+            return PARSER.parseFrom(data, extensionRegistry);
+        }
+
+        public static cn.arry.gen.common.CommonMsg.ServerIdInfoProto parseFrom(java.io.InputStream input)
+                throws java.io.IOException {
+            return PARSER.parseFrom(input);
+        }
+
+        public static cn.arry.gen.common.CommonMsg.ServerIdInfoProto parseFrom(
+                java.io.InputStream input,
+                com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+                throws java.io.IOException {
+            return PARSER.parseFrom(input, extensionRegistry);
+        }
+
+        public static cn.arry.gen.common.CommonMsg.ServerIdInfoProto parseDelimitedFrom(java.io.InputStream input)
+                throws java.io.IOException {
+            return PARSER.parseDelimitedFrom(input);
+        }
+
+        public static cn.arry.gen.common.CommonMsg.ServerIdInfoProto parseDelimitedFrom(
+                java.io.InputStream input,
+                com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+                throws java.io.IOException {
+            return PARSER.parseDelimitedFrom(input, extensionRegistry);
+        }
+
+        public static cn.arry.gen.common.CommonMsg.ServerIdInfoProto parseFrom(
+                com.google.protobuf.CodedInputStream input)
+                throws java.io.IOException {
+            return PARSER.parseFrom(input);
+        }
+
+        public static cn.arry.gen.common.CommonMsg.ServerIdInfoProto parseFrom(
+                com.google.protobuf.CodedInputStream input,
+                com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+                throws java.io.IOException {
+            return PARSER.parseFrom(input, extensionRegistry);
+        }
+
+        public static Builder newBuilder() {
+            return Builder.create();
+        }
+
+        public Builder newBuilderForType() {
+            return newBuilder();
+        }
+
+        public static Builder newBuilder(cn.arry.gen.common.CommonMsg.ServerIdInfoProto prototype) {
+            return newBuilder().mergeFrom(prototype);
+        }
+
+        public Builder toBuilder() {
+            return newBuilder(this);
+        }
+
+        @java.lang.Override
+        protected Builder newBuilderForType(
+                com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+            Builder builder = new Builder(parent);
+            return builder;
+        }
+
+        /**
+         * Protobuf type {@code cn.arry.gen.common.ServerIdInfoProto}
+         * <p>
+         * <pre>
+         * 服务器信息
+         * </pre>
+         */
+        public static final class Builder extends
+                com.google.protobuf.GeneratedMessage.Builder<Builder> implements
+                // @@protoc_insertion_point(builder_implements:cn.arry.gen.common.ServerIdInfoProto)
+                cn.arry.gen.common.CommonMsg.ServerIdInfoProtoOrBuilder {
+            public static final com.google.protobuf.Descriptors.Descriptor
+            getDescriptor() {
+                return cn.arry.gen.common.CommonMsg.internal_static_cn_arry_gen_common_ServerIdInfoProto_descriptor;
+            }
+
+            protected com.google.protobuf.GeneratedMessage.FieldAccessorTable
+            internalGetFieldAccessorTable() {
+                return cn.arry.gen.common.CommonMsg.internal_static_cn_arry_gen_common_ServerIdInfoProto_fieldAccessorTable
+                        .ensureFieldAccessorsInitialized(
+                                cn.arry.gen.common.CommonMsg.ServerIdInfoProto.class, cn.arry.gen.common.CommonMsg.ServerIdInfoProto.Builder.class);
+            }
+
+            // Construct using cn.arry.gen.common.CommonMsg.ServerIdInfoProto.newBuilder()
+            private Builder() {
+                maybeForceBuilderInitialization();
+            }
+
+            private Builder(
+                    com.google.protobuf.GeneratedMessage.BuilderParent parent) {
+                super(parent);
+                maybeForceBuilderInitialization();
+            }
+
+            private void maybeForceBuilderInitialization() {
+                if (com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders) {
+                }
+            }
+
+            private static Builder create() {
+                return new Builder();
+            }
+
+            public Builder clear() {
+                super.clear();
+                serverId_ = 0;
+                bitField0_ = (bitField0_ & ~0x00000001);
+                loadValue_ = 0;
+                bitField0_ = (bitField0_ & ~0x00000002);
+                return this;
+            }
+
+            public Builder clone() {
+                return create().mergeFrom(buildPartial());
+            }
+
+            public com.google.protobuf.Descriptors.Descriptor
+            getDescriptorForType() {
+                return cn.arry.gen.common.CommonMsg.internal_static_cn_arry_gen_common_ServerIdInfoProto_descriptor;
+            }
+
+            public cn.arry.gen.common.CommonMsg.ServerIdInfoProto getDefaultInstanceForType() {
+                return cn.arry.gen.common.CommonMsg.ServerIdInfoProto.getDefaultInstance();
+            }
+
+            public cn.arry.gen.common.CommonMsg.ServerIdInfoProto build() {
+                cn.arry.gen.common.CommonMsg.ServerIdInfoProto result = buildPartial();
+                if (!result.isInitialized()) {
+                    throw newUninitializedMessageException(result);
+                }
+                return result;
+            }
+
+            public cn.arry.gen.common.CommonMsg.ServerIdInfoProto buildPartial() {
+                cn.arry.gen.common.CommonMsg.ServerIdInfoProto result = new cn.arry.gen.common.CommonMsg.ServerIdInfoProto(this);
+                int from_bitField0_ = bitField0_;
+                int to_bitField0_ = 0;
+                if (((from_bitField0_ & 0x00000001) == 0x00000001)) {
+                    to_bitField0_ |= 0x00000001;
+                }
+                result.serverId_ = serverId_;
+                if (((from_bitField0_ & 0x00000002) == 0x00000002)) {
+                    to_bitField0_ |= 0x00000002;
+                }
+                result.loadValue_ = loadValue_;
+                result.bitField0_ = to_bitField0_;
+                onBuilt();
+                return result;
+            }
+
+            public Builder mergeFrom(com.google.protobuf.Message other) {
+                if (other instanceof cn.arry.gen.common.CommonMsg.ServerIdInfoProto) {
+                    return mergeFrom((cn.arry.gen.common.CommonMsg.ServerIdInfoProto) other);
+                } else {
+                    super.mergeFrom(other);
+                    return this;
+                }
+            }
+
+            public Builder mergeFrom(cn.arry.gen.common.CommonMsg.ServerIdInfoProto other) {
+                if (other == cn.arry.gen.common.CommonMsg.ServerIdInfoProto.getDefaultInstance()) return this;
+                if (other.hasServerId()) {
+                    setServerId(other.getServerId());
+                }
+                if (other.hasLoadValue()) {
+                    setLoadValue(other.getLoadValue());
+                }
+                this.mergeUnknownFields(other.getUnknownFields());
+                return this;
+            }
+
+            public final boolean isInitialized() {
+                return true;
+            }
+
+            public Builder mergeFrom(
+                    com.google.protobuf.CodedInputStream input,
+                    com.google.protobuf.ExtensionRegistryLite extensionRegistry)
+                    throws java.io.IOException {
+                cn.arry.gen.common.CommonMsg.ServerIdInfoProto parsedMessage = null;
+                try {
+                    parsedMessage = PARSER.parsePartialFrom(input, extensionRegistry);
+                } catch (com.google.protobuf.InvalidProtocolBufferException e) {
+                    parsedMessage = (cn.arry.gen.common.CommonMsg.ServerIdInfoProto) e.getUnfinishedMessage();
+                    throw e;
+                } finally {
+                    if (parsedMessage != null) {
+                        mergeFrom(parsedMessage);
+                    }
+                }
+                return this;
+            }
+
+            private int bitField0_;
+
+            private int serverId_;
+
+            /**
+             * <code>optional int32 serverId = 1;</code>
+             * <p>
+             * <pre>
+             * serverid
+             * </pre>
+             */
+            public boolean hasServerId() {
+                return ((bitField0_ & 0x00000001) == 0x00000001);
+            }
+
+            /**
+             * <code>optional int32 serverId = 1;</code>
+             * <p>
+             * <pre>
+             * serverid
+             * </pre>
+             */
+            public int getServerId() {
+                return serverId_;
+            }
+
+            /**
+             * <code>optional int32 serverId = 1;</code>
+             * <p>
+             * <pre>
+             * serverid
+             * </pre>
+             */
+            public Builder setServerId(int value) {
+                bitField0_ |= 0x00000001;
+                serverId_ = value;
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>optional int32 serverId = 1;</code>
+             * <p>
+             * <pre>
+             * serverid
+             * </pre>
+             */
+            public Builder clearServerId() {
+                bitField0_ = (bitField0_ & ~0x00000001);
+                serverId_ = 0;
+                onChanged();
+                return this;
+            }
+
+            private int loadValue_;
+
+            /**
+             * <code>optional int32 loadValue = 2;</code>
+             * <p>
+             * <pre>
+             * loadValue
+             * </pre>
+             */
+            public boolean hasLoadValue() {
+                return ((bitField0_ & 0x00000002) == 0x00000002);
+            }
+
+            /**
+             * <code>optional int32 loadValue = 2;</code>
+             * <p>
+             * <pre>
+             * loadValue
+             * </pre>
+             */
+            public int getLoadValue() {
+                return loadValue_;
+            }
+
+            /**
+             * <code>optional int32 loadValue = 2;</code>
+             * <p>
+             * <pre>
+             * loadValue
+             * </pre>
+             */
+            public Builder setLoadValue(int value) {
+                bitField0_ |= 0x00000002;
+                loadValue_ = value;
+                onChanged();
+                return this;
+            }
+
+            /**
+             * <code>optional int32 loadValue = 2;</code>
+             * <p>
+             * <pre>
+             * loadValue
+             * </pre>
+             */
+            public Builder clearLoadValue() {
+                bitField0_ = (bitField0_ & ~0x00000002);
+                loadValue_ = 0;
+                onChanged();
+                return this;
+            }
+
+            // @@protoc_insertion_point(builder_scope:cn.arry.gen.common.ServerIdInfoProto)
+        }
+
+        static {
+            defaultInstance = new ServerIdInfoProto(true);
+            defaultInstance.initFields();
+        }
+
+        // @@protoc_insertion_point(class_scope:cn.arry.gen.common.ServerIdInfoProto)
+    }
+
     private static final com.google.protobuf.Descriptors.Descriptor
             internal_static_cn_arry_gen_common_TestProto_descriptor;
     private static
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
             internal_static_cn_arry_gen_common_TestProto_fieldAccessorTable;
+    private static final com.google.protobuf.Descriptors.Descriptor
+            internal_static_cn_arry_gen_common_ServerIdInfoProto_descriptor;
+    private static
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+            internal_static_cn_arry_gen_common_ServerIdInfoProto_fieldAccessorTable;
 
     public static com.google.protobuf.Descriptors.FileDescriptor
     getDescriptor() {
@@ -506,8 +1106,9 @@ public final class CommonMsg {
     static {
         java.lang.String[] descriptorData = {
                 "\n\023common/Common.proto\022\022cn.arry.gen.commo" +
-                        "n\"\033\n\tTestProto\022\016\n\006testID\030\001 \001(\005B\013B\tCommon" +
-                        "Msg"
+                        "n\"\033\n\tTestProto\022\016\n\006testID\030\001 \001(\005\"8\n\021Server" +
+                        "IdInfoProto\022\020\n\010serverId\030\001 \001(\005\022\021\n\tloadVal" +
+                        "ue\030\002 \001(\005B\013B\tCommonMsg"
         };
         com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner assigner =
                 new com.google.protobuf.Descriptors.FileDescriptor.InternalDescriptorAssigner() {
@@ -527,6 +1128,12 @@ public final class CommonMsg {
                 com.google.protobuf.GeneratedMessage.FieldAccessorTable(
                 internal_static_cn_arry_gen_common_TestProto_descriptor,
                 new java.lang.String[]{"TestID",});
+        internal_static_cn_arry_gen_common_ServerIdInfoProto_descriptor =
+                getDescriptor().getMessageTypes().get(1);
+        internal_static_cn_arry_gen_common_ServerIdInfoProto_fieldAccessorTable = new
+                com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+                internal_static_cn_arry_gen_common_ServerIdInfoProto_descriptor,
+                new java.lang.String[]{"ServerId", "LoadValue",});
     }
 
     // @@protoc_insertion_point(outer_class_scope)

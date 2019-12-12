@@ -14,6 +14,8 @@ public interface CmdType {
     // c2s end
 
     // s2s begin
-    short S2S_SERVER_LOGIN = 10001;
+    short S2S_SERVER_COMMON = 10001;
+    short S2S_SERVER_LOGIN = 10002;
+    short S2S_SERVER_LOGIN_RESP = 10003;
     // s2s end
 }

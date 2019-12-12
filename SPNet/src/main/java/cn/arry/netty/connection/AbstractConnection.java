@@ -55,7 +55,7 @@ public abstract class AbstractConnection {
     /**
      * 发送数据包
      */
-    protected void send(Object packet) {
+    public void send(Object packet) {
         if (channel != null && channel.isActive()) {
             channel.writeAndFlush(packet);
         }

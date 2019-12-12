@@ -206,7 +206,7 @@ public class ClassUtil {
 
             return classList;
         } catch (Exception e) {
-            Log.error("get classes error. ", e);
+            Log.error("get classes error.", e);
             return null;
         }
     }
@@ -215,11 +215,6 @@ public class ClassUtil {
      * Recursive method used to find all classes in a given directory and
      * subdirs. Adapted from http://snippets.dzone.com/posts/show/4831 and
      * extended to support use of JAR files
-     *
-     * @param directory   The base directory
-     * @param packageName The package name for classes found inside the base directory
-     * @return The classes
-     * @throws ClassNotFoundException
      */
     private static TreeSet<String> findClasses(String directory,
                                                String packageName) throws Exception {
@@ -265,17 +260,6 @@ public class ClassUtil {
 
     /**
      * 构造一个不定参数的类
-     *
-     * @param newoneClass
-     * @param args
-     * @return
-     * @throws ClassNotFoundException
-     * @throws SecurityException
-     * @throws NoSuchMethodException
-     * @throws IllegalArgumentException
-     * @throws InstantiationException
-     * @throws IllegalAccessException
-     * @throws InvocationTargetException
      */
     public static Object newInstance(Class<?> newoneClass, String args)
             throws SecurityException, NoSuchMethodException,

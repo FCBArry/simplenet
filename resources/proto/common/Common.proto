@@ -6,3 +6,9 @@ option java_outer_classname = "CommonMsg";
 message TestProto {
     optional int32 testID = 1; // test
 }
+
+// 服务器信息
+message ServerIdInfoProto {
+    optional int32 serverId = 1; // serverid
+    optional int32 loadValue = 2; // loadValue
+}

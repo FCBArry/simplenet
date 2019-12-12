@@ -1,9 +1,11 @@
 package cn.arry.netty.connection;
 
+import cn.arry.CmdType;
 import cn.arry.Const;
 import cn.arry.Log;
-import cn.arry.netty.handler.CommonCmdHandler;
+import cn.arry.gen.server.SCommonMsg.ServerRegisterProto;
 import cn.arry.netty.handler.ServerChannelHandler;
+import cn.arry.netty.handler.cmd.CommonCmdHandler;
 import cn.arry.netty.initializer.ServerChannelInitializer;
 import cn.arry.netty.packet.S2SPacket;
 import com.google.protobuf.GeneratedMessage.Builder;
@@ -154,12 +156,11 @@ public class NettyServerConnection extends AbstractConnection {
     }
 
     public void sendLogin() {
-//        ServerRegisterProto.Builder builder = ServerRegisterProto.newBuilder();
-//        builder.setAreaId(GlobalConfigManager.getInstance().getGlobalConfig().getAreaId());
-//        builder.setRegionId(ServerConfigManager.getInstance().getServerConfig().getRegionId());
-//        builder.setServerId(ServerConfigManager.getInstance().getServerConfig().getServerId());
-//        sendServerMessage(CmdType.SERVERS_TO_PROXY_REGISTER, builder);
-//        Log.info("Server->ProxyServer.sendRegister. ip: {}, port: {},serverId:{}", getAddress(), getPort(), builder.getServerId());
+        ServerRegisterProto.Builder builder = ServerRegisterProto.newBuilder();
+        builder.setServerId(Const.TEMP_GAME_SERVER_ID);
+        sendServerMessage(CmdType.S2S_SERVER_LOGIN, builder);
+        Log.info("Server->ProxyServer.sendRegister, ip:{} port:{} serverId:{}", getAddress(), getPort(),
+                builder.getServerId());
     }
 
     @Override

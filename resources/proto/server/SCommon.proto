@@ -6,3 +6,18 @@ option java_outer_classname = "SCommonMsg";
 message TestProto {
     optional int32 testID = 1; // test
 }
+
+// 服务器注册
+// 10002
+// s2s
+message ServerRegisterProto {
+    required int32 serverId = 1;
+}
+
+// 服务器注册成功
+// 10003
+// s2s
+message ServerRegisterSuccessProto {
+    required int32 serverId = 1;
+    optional bool isSuccess = 2;
+}
