@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <!-- db -->
+    <!--<database>-->
+    <!--<pool>-->
+    <!--<db name="GameDB">-->
+    <!--<jdbcUrl>jdbc:mysql://127.0.0.1:3306/db_game?allowMultiQueries=true&amp;characterEncoding=utf8</jdbcUrl>-->
+    <!--<userName>root</userName>-->
+    <!--<passWord>123456</passWord>-->
+    <!--<maxConnCount>16</maxConnCount>-->
+    <!--</db>-->
+    <!--</pool>-->
+    <!--</database>-->
+
+    <!-- redis -->
+    <redisdb>
+        <node ip="127.0.0.1" port="6379" auth="" timeout="1000000" db="1"></node>
+    </redisdb>
+</config>

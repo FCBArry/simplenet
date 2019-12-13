@@ -26,6 +26,4 @@ public class ConstType {
     public static final int TEMP_GAME_SERVER_ID = 1001;
 
     public static final int TEMP_PROXY_SERVER_ID = 2001;
-
-    public static final String LOGBACK_FILE_PATH = "../resources/config/logback.xml";
 }

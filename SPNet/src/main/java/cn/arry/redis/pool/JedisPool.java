@@ -16,11 +16,11 @@ import java.util.List;
  * @version 2019/5/8
  */
 public class JedisPool implements Pool {
-    private List<Node> nodeList;
+    private List<RedisNode> nodeList;
 
     private ShardedJedisPool shardedJedisPool;
 
-    public JedisPool(List<Node> nodeList) {
+    public JedisPool(List<RedisNode> nodeList) {
         this.nodeList = nodeList;
     }
 
@@ -33,7 +33,7 @@ public class JedisPool implements Pool {
         jedisPoolConfig.setMaxTotal(3000);
 
         List<JedisShardInfo> jedisShardInfos = new ArrayList<>();
-        for (Node node : nodeList) {
+        for (RedisNode node : nodeList) {
             JedisShardInfo shardInfo = new JedisShardInfo(node.getIp(), node.getPort(), node.getTimeout());
             shardInfo.setSoTimeout(node.getTimeout());
             if (node.getAuth().length() > 0)

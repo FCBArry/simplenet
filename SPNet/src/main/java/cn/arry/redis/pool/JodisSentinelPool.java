@@ -15,11 +15,11 @@ import java.util.Set;
  * @version 2019/5/8
  */
 public class JodisSentinelPool implements Pool {
-    private List<Node> nodeList;
+    private List<RedisNode> nodeList;
 
     private JedisSentinelPool sentinelPool;
 
-    public JodisSentinelPool(List<Node> nodeList) {
+    public JodisSentinelPool(List<RedisNode> nodeList) {
         this.nodeList = nodeList;
     }
 
@@ -32,10 +32,10 @@ public class JodisSentinelPool implements Pool {
         jedisPoolConfig.setMaxTotal(3000);
 
         Set<String> sentinels = new HashSet<>();
-        for (Node node : nodeList)
+        for (RedisNode node : nodeList)
             sentinels.add(new HostAndPort(node.getIp(), node.getPort()).toString());
 
-        Node typicalNode = nodeList.get(0);
+        RedisNode typicalNode = nodeList.get(0);
         sentinelPool = new JedisSentinelPool("mymaster", sentinels, jedisPoolConfig, typicalNode.getTimeout(),
                 typicalNode.getAuth().length() > 0 ? typicalNode.getAuth() : null, typicalNode.getDb());
 

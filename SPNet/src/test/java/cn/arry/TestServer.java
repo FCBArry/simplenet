@@ -7,12 +7,11 @@ import cn.arry.netty.handler.ClientChannelHandler;
 import cn.arry.netty.handler.cmd.CommonCmdHandler;
 import cn.arry.netty.initializer.ClientChannelInitializer;
 import cn.arry.netty.manager.CmdManager;
-import cn.arry.redis.RedisMgr;
-import cn.arry.redis.pool.Node;
-import cn.arry.utils.FileUtil;
+import cn.arry.netty.manager.ConfigManager;
+import cn.arry.type.ServerType;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * server
@@ -25,7 +24,7 @@ import java.util.List;
  */
 public class TestServer {
     public static void main(String[] args) {
-        if (!FileUtil.loadDefaultLogbackFile()) {
+        if (!ConfigManager.getInstance().init("../resources/config/variable.xml")) {
             return;
         }
 
@@ -33,30 +32,19 @@ public class TestServer {
             return;
         }
 
-        List<Node> nodes = new ArrayList<>();
-        Node node = new Node();
-        node.setIp("127.0.0.1");
-        node.setPort(6379);
-        node.setAuth("");
-        node.setTimeout(1000000);
-        node.setZkProxyDir("/jodis/sdtest");
-        node.setDb(1);
-        nodes.add(node);
-        if (!RedisMgr.init(1, nodes)) {
-            return;
-        }
+        // 服务器配置
+        Map<Integer, List<ServerConfig>> serverMap = ConfigManager.getInstance().getServerConfigMap();
 
         // 充当server角色
-        if (!NettyServerComponent.getInstance().start("0.0.0.0", 6666,
+        ServerConfig serverConfig = serverMap.get(ServerType.GAME.getValue()).get(0);
+        if (!NettyServerComponent.getInstance().start(serverConfig.getAddr(), serverConfig.getPort(),
                 new ClientChannelInitializer(new ClientChannelHandler(new CommonCmdHandler())))) {
             return;
         }
 
         // 充当client角色
-        List<ServerConfig> serverConfigs = new ArrayList<>();
-        ServerConfig serverConfig = new ServerConfig(2001, "127.0.0.1", 8888);
-        serverConfigs.add(serverConfig);
-        if (!ProxyConnComponent.getInstance().start(new CommonCmdHandler(), serverConfigs)) {
+        List<ServerConfig> serverConfigList = serverMap.get(ServerType.PROXY.getValue());
+        if (!ProxyConnComponent.getInstance().start(new CommonCmdHandler(), serverConfigList)) {
             return;
         }
 

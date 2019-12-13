@@ -11,7 +11,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class Node {
+public class RedisNode {
     String ip;
 
     int port;

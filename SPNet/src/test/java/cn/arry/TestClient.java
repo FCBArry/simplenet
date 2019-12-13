@@ -19,7 +19,7 @@ import io.netty.channel.SimpleChannelInboundHandler;
  */
 public class TestClient {
     public static void main(String[] args) {
-        if (!FileUtil.loadDefaultLogbackFile()) {
+        if (!FileUtil.loadDefaultLogbackFile("../resources/config/logback.xml")) {
             return;
         }
 

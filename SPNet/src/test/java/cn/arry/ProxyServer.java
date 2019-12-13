@@ -1,16 +1,16 @@
 package cn.arry;
 
+import cn.arry.meta.ServerConfig;
 import cn.arry.netty.component.NettyServerComponent;
 import cn.arry.netty.handler.ProxyChannelHandler;
 import cn.arry.netty.handler.cmd.ProxyCmdHandler;
 import cn.arry.netty.initializer.ServerChannelInitializer;
 import cn.arry.netty.manager.CmdManager;
-import cn.arry.redis.RedisMgr;
-import cn.arry.redis.pool.Node;
-import cn.arry.utils.FileUtil;
+import cn.arry.netty.manager.ConfigManager;
+import cn.arry.type.ServerType;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * proxy server
@@ -22,7 +22,7 @@ import java.util.List;
  */
 public class ProxyServer {
     public static void main(String[] args) {
-        if (!FileUtil.loadDefaultLogbackFile()) {
+        if (!ConfigManager.getInstance().init("../resources/config/variable.xml")) {
             return;
         }
 
@@ -30,21 +30,12 @@ public class ProxyServer {
             return;
         }
 
-        List<Node> nodes = new ArrayList<>();
-        Node node = new Node();
-        node.setIp("127.0.0.1");
-        node.setPort(6379);
-        node.setAuth("");
-        node.setTimeout(1000000);
-        node.setZkProxyDir("/jodis/sdtest");
-        node.setDb(1);
-        nodes.add(node);
-        if (!RedisMgr.init(1, nodes)) {
-            return;
-        }
+        // 服务器配置
+        Map<Integer, List<ServerConfig>> serverMap = ConfigManager.getInstance().getServerConfigMap();
 
         // 充当server角色
-        if (NettyServerComponent.getInstance().start("0.0.0.0", 8888,
+        ServerConfig serverConfig = serverMap.get(ServerType.PROXY.getValue()).get(0);
+        if (NettyServerComponent.getInstance().start(serverConfig.getAddr(), serverConfig.getPort(),
                 new ServerChannelInitializer(new ProxyChannelHandler(new ProxyCmdHandler())))) {
             return;
         }

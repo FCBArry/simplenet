@@ -2,6 +2,4 @@
 
 # task queue
 
-# 配置
-
 #

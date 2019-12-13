@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <logbackFilePath>../resources/config/logback.xml</logbackFilePath>
+    <dbPath>../resources/config/db.xml</dbPath>
+    <serverPath>../resources/config/server.xml</serverPath>
+</config>

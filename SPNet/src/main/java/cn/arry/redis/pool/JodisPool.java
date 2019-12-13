@@ -13,11 +13,11 @@ import java.util.List;
  * @version 2019/5/8
  */
 public class JodisPool implements Pool {
-    private List<Node> nodeList;
+    private List<RedisNode> nodeList;
 
     private JedisResourcePool jedisResourcePool;
 
-    public JodisPool(List<Node> nodeList) {
+    public JodisPool(List<RedisNode> nodeList) {
         this.nodeList = nodeList;
     }
 
@@ -30,12 +30,12 @@ public class JodisPool implements Pool {
         jedisPoolConfig.setMaxTotal(3000);
 
         try {
-            Node node = nodeList.get(0);
+            RedisNode node = nodeList.get(0);
             StringBuilder urlBuilder = new StringBuilder();
             int timeout = node.getTimeout();
             String zkProxyDir = node.getZkProxyDir();
 
-            for (Node info : nodeList) {
+            for (RedisNode info : nodeList) {
                 urlBuilder.append(String.format("%s:%d", info.getIp(), info.getPort()));
                 urlBuilder.append(",");
             }

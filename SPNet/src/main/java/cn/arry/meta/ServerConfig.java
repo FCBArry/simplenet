@@ -12,15 +12,21 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ServerConfig {
+    private int serverType;
+
     private int serverId;
 
     private String addr;
 
     private int port;
 
-    public ServerConfig(int serverId, String addr, int port) {
+    private int id;
+
+    public ServerConfig(int serverType, int serverId, String addr, int port, int id) {
+        this.serverType = serverType;
         this.serverId = serverId;
         this.addr = addr;
         this.port = port;
+        this.id = id;
     }
 }

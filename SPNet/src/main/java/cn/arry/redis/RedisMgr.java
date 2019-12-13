@@ -3,8 +3,8 @@ package cn.arry.redis;
 import cn.arry.redis.pool.JedisPool;
 import cn.arry.redis.pool.JodisPool;
 import cn.arry.redis.pool.JodisSentinelPool;
-import cn.arry.redis.pool.Node;
 import cn.arry.redis.pool.Pool;
+import cn.arry.redis.pool.RedisNode;
 import lombok.Getter;
 import lombok.Setter;
 import redis.clients.jedis.Jedis;
@@ -20,13 +20,13 @@ import java.util.Map;
 @Getter
 @Setter
 public class RedisMgr {
-    private static List<Node> nodeList;
+    private static List<RedisNode> nodeList;
 
     private static Pool pool;
 
     private static int db;
 
-    public static boolean init(int type, List<Node> nodeList) {
+    public static boolean init(int type, List<RedisNode> nodeList) {
         if (type == 1) {
             pool = new JedisPool(nodeList);
         } else if (type == 2) {
