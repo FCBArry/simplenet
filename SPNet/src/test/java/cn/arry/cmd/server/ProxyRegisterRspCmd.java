@@ -5,7 +5,7 @@ import cn.arry.Log;
 import cn.arry.gen.server.SCommonMsg.ServerRegisterSuccessProto;
 import cn.arry.netty.cmd.CommandAdapter;
 import cn.arry.netty.cmd.ICode;
-import cn.arry.netty.component.ProxyConnComponent;
+import cn.arry.netty.component.tcp.ProxyConnComponent;
 import cn.arry.netty.connection.AbstractConnection;
 import cn.arry.netty.connection.NettyServerConnection;
 import cn.arry.netty.packet.S2SPacket;

@@ -1,4 +1,4 @@
-package cn.arry.netty;
+package cn.arry.netty.customize;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;

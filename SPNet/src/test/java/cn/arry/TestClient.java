@@ -1,7 +1,7 @@
 package cn.arry;
 
 import cn.arry.gen.client.CCommonMsg.SayHelloProto;
-import cn.arry.netty.component.NettyClientComponent;
+import cn.arry.netty.component.tcp.NettyClientComponent;
 import cn.arry.netty.initializer.ClientChannelInitializer;
 import cn.arry.netty.packet.C2SPacket;
 import cn.arry.utils.FileUtil;
@@ -57,5 +57,8 @@ public class TestClient {
                 e.printStackTrace();
             }
         }
+
+        // 阻塞直到服务器关闭链接
+        NettyClientComponent.getInstance().stop();
     }
 }

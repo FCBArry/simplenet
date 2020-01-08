@@ -1,13 +1,10 @@
-package cn.arry.netty.component;
+package cn.arry.netty.component.tcp;
 
 import cn.arry.Log;
+import cn.arry.netty.component.IComponent;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.PooledByteBufAllocator;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelHandler;
-import io.netty.channel.ChannelOption;
-import io.netty.channel.EventLoopGroup;
-import io.netty.channel.WriteBufferWaterMark;
+import io.netty.channel.*;
 import io.netty.channel.epoll.Epoll;
 import io.netty.channel.epoll.EpollEventLoopGroup;
 import io.netty.channel.epoll.EpollServerSocketChannel;
@@ -88,8 +85,7 @@ public class NettyServerComponent implements IComponent {
             bootstrap.childOption(ChannelOption.WRITE_BUFFER_WATER_MARK, new WriteBufferWaterMark(1024 * 64,
                     1024 * 128));
 
-            channelFuture = bootstrap.bind(new InetSocketAddress(address, port));
-            channelFuture.sync();
+            channelFuture = bootstrap.bind(new InetSocketAddress(address, port)).sync();
 
             Log.info("NettyComponentSocket->start ok, address:{} port:{} isEpoll:{}", address, port, isEpoll);
             return true;

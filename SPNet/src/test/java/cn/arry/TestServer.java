@@ -1,8 +1,8 @@
 package cn.arry;
 
 import cn.arry.meta.ServerConfig;
-import cn.arry.netty.component.NettyServerComponent;
-import cn.arry.netty.component.ProxyConnComponent;
+import cn.arry.netty.component.tcp.NettyServerComponent;
+import cn.arry.netty.component.tcp.ProxyConnComponent;
 import cn.arry.netty.handler.ClientChannelHandler;
 import cn.arry.netty.handler.cmd.CommonCmdHandler;
 import cn.arry.netty.initializer.ClientChannelInitializer;

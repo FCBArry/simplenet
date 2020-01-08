@@ -1,7 +1,8 @@
-package cn.arry.netty.component;
+package cn.arry.netty.component.tcp;
 
 import cn.arry.Log;
 import cn.arry.meta.ServerConfig;
+import cn.arry.netty.component.IComponent;
 import cn.arry.netty.connection.NettyServerConnection;
 import cn.arry.netty.handler.cmd.CommonCmdHandler;
 import cn.arry.netty.packet.S2SPacket;

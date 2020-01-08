@@ -42,8 +42,9 @@ public class NettyClientConnection extends AbstractConnection {
      */
     public void sendClientMessage(short code, Builder<?> builder) {
         C2SPacket packet = new C2SPacket(code);
-        if (builder != null)
+        if (builder != null) {
             packet.setBuilder(builder);
+        }
 
         send(packet);
     }

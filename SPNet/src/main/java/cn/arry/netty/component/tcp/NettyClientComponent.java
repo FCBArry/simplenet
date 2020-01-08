@@ -1,6 +1,7 @@
-package cn.arry.netty.component;
+package cn.arry.netty.component.tcp;
 
 import cn.arry.Log;
+import cn.arry.netty.component.IComponent;
 import cn.arry.netty.packet.C2SPacket;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
@@ -47,6 +48,7 @@ public class NettyClientComponent implements IComponent {
             bootstrap.handler(handler);
 
             channel = bootstrap.connect(address, port).sync().channel();
+            bootstrap.bind();
         } catch (Exception e) {
             Log.error("NettyClientComponent->connect error", e);
         }

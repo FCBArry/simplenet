@@ -1,6 +1,6 @@
 package cn.arry;
 
-import cn.arry.netty.FixedLengthFrameDecoder;
+import cn.arry.netty.customize.FixedLengthFrameDecoder;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.embedded.EmbeddedChannel;
