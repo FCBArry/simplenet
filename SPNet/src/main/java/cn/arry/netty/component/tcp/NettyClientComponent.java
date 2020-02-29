@@ -48,7 +48,6 @@ public class NettyClientComponent implements IComponent {
             bootstrap.handler(handler);
 
             channel = bootstrap.connect(address, port).sync().channel();
-            bootstrap.bind();
         } catch (Exception e) {
             Log.error("NettyClientComponent->connect error", e);
         }

@@ -4,8 +4,6 @@ import io.netty.channel.Channel;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.net.InetSocketAddress;
-
 /**
  * 链接对象抽象类
  */
@@ -13,24 +11,9 @@ import java.net.InetSocketAddress;
 @Getter
 public abstract class AbstractConnection {
     /**
-     * 连接的服务器id
-     */
-    protected int serverId;
-
-    /**
-     * 链接服务器类型
-     */
-    protected int serverType;
-
-    /**
      * 连接对象
      */
     protected Channel channel;
-
-    /**
-     * 客户端地址
-     */
-    protected String clientIp;
 
     public AbstractConnection() {
 
@@ -38,8 +21,6 @@ public abstract class AbstractConnection {
 
     public AbstractConnection(Channel channel) {
         this.channel = channel;
-        InetSocketAddress inSocket = (InetSocketAddress) channel.remoteAddress();
-        this.clientIp = inSocket.getAddress().getHostAddress();
     }
 
     /**

@@ -6,6 +6,8 @@ import io.netty.channel.Channel;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.net.InetSocketAddress;
+
 /**
  * c2s链接对象
  */
@@ -13,12 +15,19 @@ import lombok.Setter;
 @Setter
 public class NettyClientConnection extends AbstractConnection {
     /**
+     * 客户端地址
+     */
+    private String clientIp;
+
+    /**
      * 连接持有者
      */
     private IConnectionHolder holder;
 
     public NettyClientConnection(Channel channel) {
         super(channel);
+        InetSocketAddress inSocket = (InetSocketAddress) channel.remoteAddress();
+        this.clientIp = inSocket.getAddress().getHostAddress();
     }
 
     @Override
@@ -31,10 +40,6 @@ public class NettyClientConnection extends AbstractConnection {
         if (holder != null) {
             holder.onDisconnect();
         }
-    }
-
-    public synchronized void setHolder(IConnectionHolder holder) {
-        this.holder = holder;
     }
 
     /**

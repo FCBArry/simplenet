@@ -7,7 +7,7 @@ import cn.arry.Log;
  */
 public enum ServerType {
     /**
-     * 登录服
+     * 游戏服
      */
     GAME(1, "GAME"),
 

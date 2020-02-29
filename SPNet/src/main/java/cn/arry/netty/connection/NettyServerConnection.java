@@ -28,14 +28,15 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 @Getter
 @Setter
 public class NettyServerConnection extends AbstractConnection {
+    /**
+     * 重连初始化延迟
+     */
     private static final int RECONNECT_INIT_TIME = 2;
 
-    private Bootstrap bootstrap;
-
     /**
-     * 相关操作的锁
+     * 重连延迟（单位s）
      */
-    private final ReentrantReadWriteLock connetorLock = new ReentrantReadWriteLock();
+    private int reconnectDelay = RECONNECT_INIT_TIME;
 
     /**
      * 是否自动连接
@@ -43,14 +44,16 @@ public class NettyServerConnection extends AbstractConnection {
     protected boolean isAutoConnect = true;
 
     /**
+     * 锁
+     */
+    private final ReentrantReadWriteLock connetorLock = new ReentrantReadWriteLock();
+
+    private Bootstrap bootstrap;
+
+    /**
      * 重连次数
      */
     private int reconnectTimes = 0;
-
-    /**
-     * 是否登陆完成
-     */
-    private boolean loginSuccess;
 
     /**
      * 是否关闭入口
@@ -63,9 +66,14 @@ public class NettyServerConnection extends AbstractConnection {
     private ScheduledThreadPoolExecutor service;
 
     /**
-     * 重连延迟（单位s）
+     * cmd处理
      */
-    private int reconnectDelay = RECONNECT_INIT_TIME;
+    private CommonCmdHandler cmdHandler;
+
+    /**
+     * 是否登陆完成
+     */
+    private boolean loginSuccess;
 
     /**
      * 连接地址（IP或域名）
@@ -77,8 +85,6 @@ public class NettyServerConnection extends AbstractConnection {
      */
     private int port;
 
-    private CommonCmdHandler cmdHandler;
-
     /**
      * 大区id
      */
@@ -88,6 +94,16 @@ public class NettyServerConnection extends AbstractConnection {
      * 小区id
      */
     protected int regionId;
+
+    /**
+     * 连接的服务器id
+     */
+    protected int serverId;
+
+    /**
+     * 链接服务器类型
+     */
+    protected int serverType;
 
     public NettyServerConnection(Channel channel) {
         super(channel);
@@ -107,12 +123,11 @@ public class NettyServerConnection extends AbstractConnection {
     }
 
     /**
-     * 执行连接(内部调用)
+     * 执行连接（as a client）
      **/
     public boolean connect() {
+        connetorLock.writeLock().lock();
         try {
-            connetorLock.writeLock().lock();
-
             if (bootstrap == null) {
                 EventLoopGroup group = new NioEventLoopGroup();
                 bootstrap = new Bootstrap();
@@ -120,59 +135,30 @@ public class NettyServerConnection extends AbstractConnection {
                 bootstrap.handler(new ServerChannelInitializer(new ServerChannelHandler(cmdHandler)));
                 bootstrap.option(ChannelOption.SO_KEEPALIVE, true);
             }
+
             channel = bootstrap.connect(getAddress(), getPort()).sync().channel();
         } catch (Exception e) {
-            Log.error("connect error address:{},port:{}", getAddress(), getPort());
+            Log.error("NettyServerConnection->connect error, address:{}, port:{}", getAddress(), getPort());
             return false;
         } finally {
             connetorLock.writeLock().unlock();
         }
+
         return true;
     }
 
     /**
-     * 连接
+     * 掉线
      */
-    public void reconnectImpl() {
-        try {
-            if (isConnected()) {
-                return;
-            }
-
-            if (connect()) {
-                sendLogin();
-                channel.attr(ConstType.SERVER_SESSION).set(this);
-                Log.info("reconnectImpl ip:{}, port:{}. sessionId:{} ProxyClient Connect To Server Successfully!", getAddress(), getPort(), channel.id());
-                return;
-            }
-
-            Log.info("ip:{}, port:{}.ProxyClient Connect To Server fail try angin!reconnectTimes:{},reconnectDelay:{}", getAddress(), getPort(), reconnectTimes, reconnectDelay);
-            if (isAutoConnect) {
-                reconnect();
-            }
-        } catch (Exception e) {
-            Log.error("{}ProxyClient Disconnection Exception:", e);
-        }
-    }
-
-    public void sendLogin() {
-        ServerRegisterProto.Builder builder = ServerRegisterProto.newBuilder();
-        builder.setServerId(ConstType.TEMP_GAME_SERVER_ID);
-        sendServerMessage(CmdType.S2S_SERVER_LOGIN, builder);
-        Log.info("Server->ProxyServer.sendRegister, ip:{} port:{} serverId:{}", getAddress(), getPort(),
-                builder.getServerId());
-    }
-
     @Override
     public void disconnect() {
         loginSuccess = false;
-
         if (isConnected()) {
             channel.close();
             channel = null;
         }
-        Log.error("disconnect begin: isconnection:{}", isAutoConnect);
 
+        Log.error("NettyServerConnection->disconnect, isAutoConnect:{}", isAutoConnect);
         if (isAutoConnect()) {
             reconnectTimes = 0;
             reconnectDelay = RECONNECT_INIT_TIME;
@@ -181,21 +167,56 @@ public class NettyServerConnection extends AbstractConnection {
     }
 
     /**
-     * 连接(启动重连线程)
+     * 重连
      **/
     public void reconnect() {
-        Log.info("reconnectip: {}, port: {}.ProxyClient Connect To Server beginreconnectTimes:{},reconnectDelay:{}", getAddress(), getPort(), reconnectTimes, reconnectDelay);
+        Log.info("NettyServerConnection->reconnect, ip:{}, port:{}, reconnectTimes:{}, reconnectDelay:{}",
+                getAddress(), getPort(), reconnectTimes, reconnectDelay);
         if (reconnectTimes++ >= 50) {
-            if (reconnectDelay < 32)
+            if (reconnectDelay < 32) {
                 reconnectDelay *= 2;
+            }
         }
 
-        service.schedule(new Runnable() {
-            @Override
-            public void run() {
-                reconnectImpl();
+        service.schedule(this::reconnectImpl, reconnectDelay, TimeUnit.SECONDS);
+    }
+
+    /**
+     * 连接
+     */
+    private void reconnectImpl() {
+        try {
+            if (isConnected()) {
+                return;
             }
-        }, reconnectDelay, TimeUnit.SECONDS);
+
+            if (connect()) {
+                sendLogin();
+                channel.attr(ConstType.SERVER_SESSION).set(this);
+                Log.info("NettyServerConnection->reconnectImpl, reconnectImpl done! ip:{}, port:{}, sessionId:{}",
+                        getAddress(), getPort(), channel.id());
+                return;
+            }
+
+            Log.info("NettyServerConnection->reconnectImpl, try again! ip:{}, port:{}, reconnectTimes:{}, reconnectDelay:{}",
+                    getAddress(), getPort(), reconnectTimes, reconnectDelay);
+            if (isAutoConnect) {
+                reconnect();
+            }
+        } catch (Exception e) {
+            Log.error("NettyServerConnection->reconnectImpl error", e);
+        }
+    }
+
+    /**
+     * 发送注册
+     */
+    private void sendLogin() {
+        ServerRegisterProto.Builder builder = ServerRegisterProto.newBuilder();
+        builder.setServerId(ConstType.TEMP_GAME_SERVER_ID);
+        sendServerMessage(CmdType.S2S_SERVER_LOGIN, builder);
+        Log.info("NettyServerConnection->sendLogin, Server to ProxyServer sendRegister, ip:{}, port:{}, serverId:{}",
+                getAddress(), getPort(), builder.getServerId());
     }
 
     @Override
@@ -203,6 +224,7 @@ public class NettyServerConnection extends AbstractConnection {
         if (channel != null && channel.isActive()) {
             return true;
         }
+
         return false;
     }
 
